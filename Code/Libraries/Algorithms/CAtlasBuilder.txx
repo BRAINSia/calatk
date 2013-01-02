@@ -670,64 +670,93 @@ template < class TState >
 const typename CAtlasBuilder< TState >::VectorFieldType*
 CAtlasBuilder< TState >::GetMap( FloatType dTime )
 {
-  throw std::runtime_error( "GetMap not yet implemented");
-  return NULL;
+  typedef CAtlasObjectiveFunction< TState > CAtlasType;
+  typename CAtlasType::Pointer pAtlas = dynamic_cast< CAtlasType* >( this->m_ptrObjectiveFunction.GetPointer() );
+  pAtlas->GetMap( this->m_ptrMap, dTime );
+  return this->m_ptrMap;
 }
 
 template < class TState >
 const typename CAtlasBuilder< TState >::VectorFieldType*
 CAtlasBuilder< TState >::GetMap( FloatType dTime, unsigned int uiId )
 {
-  throw std::runtime_error( "GetMap not yet implemented");
-  return NULL;
+  typedef CAtlasObjectiveFunction< TState > CAtlasType;
+  typename CAtlasType::Pointer pAtlas = dynamic_cast< CAtlasType* >( this->m_ptrObjectiveFunction.GetPointer() );
+  unsigned int uiCurrentActiveObjectiveFunction = pAtlas->GetCurrentActiveObjectiveFunctionOutput();
+  pAtlas->SetCurrentActiveObjectiveFunctionOutput( uiId );
+  pAtlas->GetMap( this->m_ptrMap, dTime );
+  pAtlas->SetCurrentActiveObjectiveFunctionOutput( uiCurrentActiveObjectiveFunction );
+  return this->m_ptrMap;
 }
 
 template < class TState >
 const typename CAtlasBuilder< TState >::VectorFieldType*
 CAtlasBuilder< TState >::GetMapFromTo( FloatType dTimeFrom, FloatType dTimeTo )
 {
-  throw std::runtime_error( "GetMapFromTo not yet implemented");
-  return NULL;
+  // TODO: These types of calls *everywhere* may not be thread-safe
+  typedef CAtlasObjectiveFunction< TState > CAtlasType;
+  typename CAtlasType::Pointer pAtlas = dynamic_cast< CAtlasType* >( this->m_ptrObjectiveFunction.GetPointer() );
+  pAtlas->GetMapFromTo( this->m_ptrMap, dTimeFrom, dTimeTo );
+  return this->m_ptrMap;
 }
 
 template < class TState >
 const typename CAtlasBuilder< TState >::VectorFieldType*
 CAtlasBuilder< TState >::GetMapFromTo( FloatType dTimeFrom, FloatType dTimeTo, unsigned int uiId )
 {
-  throw std::runtime_error( "GetMapFromTo not yet implemented");
-  return NULL;
+  typedef CAtlasObjectiveFunction< TState > CAtlasType;
+  typename CAtlasType::Pointer pAtlas = dynamic_cast< CAtlasType* >( this->m_ptrObjectiveFunction.GetPointer() );
+  unsigned int uiCurrentActiveObjectiveFunction = pAtlas->GetCurrentActiveObjectiveFunctionOutput();
+  pAtlas->SetCurrentActiveObjectiveFunctionOutput( uiId );
+  pAtlas->GetMapFromTo( this->m_ptrMap, dTimeFrom, dTimeTo );
+  pAtlas->SetCurrentActiveObjectiveFunctionOutput( uiCurrentActiveObjectiveFunction );
+  return this->m_ptrMap;
 }
 
 template < class TState >
 const typename CAtlasBuilder< TState >::VectorImageType*
 CAtlasBuilder< TState >::GetSourceImage( FloatType dTime )
 {
-  throw std::runtime_error( "GetSourceImage not yet implemented");
-  return NULL;
+  typedef CAtlasObjectiveFunction< TState > CAtlasType;
+  typename CAtlasType::Pointer pAtlas = dynamic_cast< CAtlasType* >( this->m_ptrObjectiveFunction.GetPointer() );
+  pAtlas->GetSourceImage( this->m_ptrIm );
+  return this->m_ptrIm;
 }
 
 template < class TState >
 const typename CAtlasBuilder< TState >::VectorImageType*
 CAtlasBuilder< TState >::GetSourceImage( FloatType dTime, unsigned int uiId )
 {
-  throw std::runtime_error( "GetSourceImage not yet implemented");
-  return NULL;
+  typedef CAtlasObjectiveFunction< TState > CAtlasType;
+  typename CAtlasType::Pointer pAtlas = dynamic_cast< CAtlasType* >( this->m_ptrObjectiveFunction.GetPointer() );
+  unsigned int uiCurrentActiveObjectiveFunction = pAtlas->GetCurrentActiveObjectiveFunctionOutput();
+  pAtlas->SetCurrentActiveObjectiveFunctionOutput( uiId );
+  pAtlas->GetSourceImage( this->m_ptrIm );
+  pAtlas->SetCurrentActiveObjectiveFunctionOutput( uiCurrentActiveObjectiveFunction );
+  return this->m_ptrIm;
 }
 
 template < class TState >
 const typename CAtlasBuilder< TState >::VectorImageType*
 CAtlasBuilder< TState >::GetTargetImage( FloatType dTime )
 {
-  throw std::runtime_error( "GetTargetImage not yet implemented");
-  return NULL;
+  typedef CAtlasObjectiveFunction< TState > CAtlasType;
+  typename CAtlasType::Pointer pAtlas = dynamic_cast< CAtlasType* >( this->m_ptrObjectiveFunction.GetPointer() );
+  pAtlas->GetTargetImage( this->m_ptrIm );
+  return this->m_ptrIm;
 }
 
 template < class TState >
 const typename CAtlasBuilder< TState >::VectorImageType*
 CAtlasBuilder< TState >::GetTargetImage( FloatType dTime, unsigned int uiId )
 {
-  throw std::runtime_error( "GetTargetImage not yet implemented");
-  return NULL;
+  typedef CAtlasObjectiveFunction< TState > CAtlasType;
+  typename CAtlasType::Pointer pAtlas = dynamic_cast< CAtlasType* >( this->m_ptrObjectiveFunction.GetPointer() );
+  unsigned int uiCurrentActiveObjectiveFunction = pAtlas->GetCurrentActiveObjectiveFunctionOutput();
+  pAtlas->SetCurrentActiveObjectiveFunctionOutput( uiId );
+  pAtlas->GetTargetImage( this->m_ptrIm );
+  pAtlas->SetCurrentActiveObjectiveFunctionOutput( uiCurrentActiveObjectiveFunction );
+  return this->m_ptrIm;
 }
 
 template < class TState >

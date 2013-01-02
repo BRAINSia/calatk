@@ -274,7 +274,7 @@ T VectorImage< T, VImageDimension>::ComputeMaximalSquaredNorm()
   unsigned int szZ = this->GetSizeZ();
   unsigned int dim = this->GetDimension();
 
-  T dLargestSquareVal = std::numeric_limits< T >::min();
+  T dLargestSquareVal = -std::numeric_limits< T >::max();
 
   for ( unsigned z = 0; z<szZ; ++z )
   {

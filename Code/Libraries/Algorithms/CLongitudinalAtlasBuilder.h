@@ -167,7 +167,7 @@ protected:
   std::vector< std::vector< std::pair< SImageDatum, FloatType > > > ComputeIndividualGrowthModel( std::vector< SImageDatum > individualSubjectData, std::vector< TFloat > desiredTimePoints );
   std::multimap< unsigned int, std::pair< SImageDatum, FloatType > > SetupDataForAndComputeIndividualGrowthModels( std::vector< FloatType > desiredCrossSectionalAtlasTimePoints );
 
-  SImageDatum ComputeCrossSectionalAtlas( std::vector< std::pair< SImageDatum, FloatType > > crossSectionalSubjectData );
+  SImageDatum ComputeCrossSectionalAtlas( std::vector< std::pair< SImageDatum, FloatType > > crossSectionalSubjectData, FloatType atlasTimePoint );
 
   std::vector< SImageDatum > SetupDataForAndComputeCrossSectionalAtlases( std::multimap< unsigned int , std::pair< SImageDatum, FloatType > > crossSectionalAtlasImagesAndWeightsForTimeIndex, std::vector< TFloat > desiredCrossSectionalAtlasTimePoints );
   std::vector< SImageDatum > ComputePopulationGrowthModel( std::vector< SImageDatum > populationGrowthModelData );
@@ -190,6 +190,7 @@ private:
   // helper-functions to create consistent filenames
   std::string CreateIndividualGrowthModelFileNameForSubjectAtTimePoint( std::string subjectString, FloatType timePoint, int iIndex );
   std::string CreateIndividualGrowthModelMapFileNameForSubjectFromToTimePoint( std::string subjectString, FloatType fromTime, FloatType toTime, int iIndex );
+  std::string CreatePopulationGrowthModelMapFileNameFromToTimePoint( FloatType fromTime, FloatType toTime );
   std::string CreateCrossSectionalAtlasFileNameAtTimePoint( FloatType timePoint );
   std::string CreateCrossSectionalAtlasMapFileNameForSubjectAtTimePoint( std::string subjectString, FloatType timePoint, int iIndex );
   std::string CreatePopulationGrowthModelFileNameAtTimePoint( FloatType timePoint );

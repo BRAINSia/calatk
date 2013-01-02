@@ -44,7 +44,6 @@ public:
   {
     FloatType timePoint;
     int subjectId;
-    int timeSeriesIndex;
     std::string fileName;
     std::string transformFileName;
     std::string subjectString;
