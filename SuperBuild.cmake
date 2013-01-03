@@ -66,6 +66,28 @@ if( NOT USE_SYSTEM_ITK )
 endif( NOT USE_SYSTEM_ITK )
 
 ##
+## A conventient 2D/3D image viewer that can handle anisotropic spacing.
+##
+set( ImageViewer_DEPENDS )
+if( NOT USE_SYSTEM_ITK )
+  set( ImageViewer_DEPENDS ITK )
+endif()
+set( proj ImageViewer )
+ExternalProject_Add( ImageViewer
+  GIT_REPOSITORY "${GIT_PROTOCOL}://github.com/TubeTK/ImageViewer.git"
+  GIT_TAG "361e639e999d2d8f3aa093a6611398798099c89c"
+  SOURCE_DIR "${CMAKE_BINARY_DIR}/ImageViewer"
+  BINARY_DIR ImageViewer-Build
+  CMAKE_GENERATOR ${gen}
+  CMAKE_ARGS
+    "-DCMAKE_BUILD_TYPE:STRING=${build_type}"
+    "-DITK_DIR:PATH=${ITK_DIR}"
+  INSTALL_COMMAND ""
+  DEPENDS
+    ${ImageViewer_DEPENDS}
+  )
+
+##
 ## calatk - Normal Build
 ##
 set( proj CalaTK )
