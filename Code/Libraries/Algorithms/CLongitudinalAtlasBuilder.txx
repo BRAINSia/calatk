@@ -303,9 +303,9 @@ std::string
 CLongitudinalAtlasBuilder< TFloat, VImageDimension >::CreatePopulationGrowthModelMapFileNameFromToTimePoint( FloatType fromTime, FloatType toTime )
 {
   std::stringstream ss;
-  ss << "poputlationGrowthModel-map-fromTimePoint-" << fromTime << "-toTimePoint-" << toTime << ".nrrd";
+  ss << "populationGrowthModel-map-fromTimePoint-" << fromTime << "-toTimePoint-" << toTime << ".nrrd";
 
-  std::string fullName = ApplicationUtils::combinePathAndFileName( m_IndividualGrowthModelOutputDirectory, ss.str() );
+  std::string fullName = ApplicationUtils::combinePathAndFileName( m_PopulationGrowthModelOutputDirectory, ss.str() );
 
   return fullName;
 }
@@ -873,7 +873,7 @@ CLongitudinalAtlasBuilder< TFloat, VImageDimension >::SetupDataForAndComputeCros
         SImageDatum currentDatum = iter->second.first;
         // overwrite this to indicate that it is to compute a cross-sectional atlas
         currentDatum.subjectId = currentCrossSectionalAtlasSubjectId++;
-        currentDatum.subjectString = "crossSectionalAtlas";
+        currentDatum.subjectString = currentDatum.subjectString + "-crossSectionalAtlas";
         currentDatum.timePoint = 1.0; // atlas as source image; TODO: make this more flexible
 
         crossSectionalSubjectData.push_back( std::make_pair( currentDatum, iter->second.second ) );
