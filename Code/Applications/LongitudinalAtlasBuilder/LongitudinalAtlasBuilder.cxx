@@ -47,6 +47,15 @@ int DoIt( int argc, char** argv )
   typedef CALATK::CLongitudinalAtlasBuilder< TFLOAT, VImageDimension > LongitudinalAtlasBuilderType;
   typename LongitudinalAtlasBuilderType::Pointer ptrLongitudinalAtlasBuilder = new LongitudinalAtlasBuilderType;
 
+  // set settings specified on the command line
+  ptrLongitudinalAtlasBuilder->SetUseWeightedAveragesForIndividualGrowthModelTimePoints( bUseWeightedAveragesForIndividualGrowthModelTimePoints );
+  ptrLongitudinalAtlasBuilder->SetOnlyComputePopulationAtlasForFirstAvailableTimePoint( bOnlyComputePopulationAtlasForFirstAvailableTimePoint );
+  ptrLongitudinalAtlasBuilder->SetOnlyComputePopulationAtlasForLastAvailableTimePoint( bOnlyComputePopulationAtlasForLastAvailableTimePoint );
+  ptrLongitudinalAtlasBuilder->SetWriteDesiredComputationsToFileWithoutComputation( bWriteDesiredComputationsToFileWithoutComputation );
+  ptrLongitudinalAtlasBuilder->SetUsePrecomputedIndividualGrowthModels( bUsePrecomputedIndividualGrowthModels );
+  ptrLongitudinalAtlasBuilder->SetUsePrecomputedCrossSectionalAtlases( bUsePrecomputedCrossSectionalAtlases );
+  ptrLongitudinalAtlasBuilder->SetUsePrecomputedPopulationGrowthModel( bUsePrecomputedPopulationGrowthModel );
+
   CALATK::CJSONConfiguration::Pointer combinedConfiguration = new CALATK::CJSONConfiguration;
   if ( configFile.compare( "None" ) != 0 )
   {

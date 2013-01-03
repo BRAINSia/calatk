@@ -1,0 +1,26 @@
+{
+
+"Inputs":
+{
+	"Subject0":
+	[
+	[0.0, "atlas/impulse0.nhdr"],
+	[0.1, "atlas/impulse1.nhdr"],
+	[0.2, "atlas/impulse2.nhdr"],
+	[0.3, "atlas/impulse3.nhdr"]
+	],
+	"Subject2":
+	[
+	[0.3, "atlas/impulse6.nhdr"],
+	[0.5, "atlas/impulse7.nhdr"],
+	[0.7, "atlas/impulse8.nhdr"]
+	],
+	"Subject3":
+	[
+	[0.2, "atlas/impulse4.nhdr"],
+	[0.3, "atlas/impulse5.nhdr"],
+	[0.4, "atlas/impulse6.nhdr"]
+	]
+}
+
+}

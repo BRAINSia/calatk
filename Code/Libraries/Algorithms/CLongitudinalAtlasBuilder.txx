@@ -50,7 +50,15 @@ CLongitudinalAtlasBuilder< TFloat, VImageDimension >::CLongitudinalAtlasBuilder(
     DefaultNumberOfCrossSectionalAtlasTimePoints( 10 ),
     m_ExternallySetNumberOfCrossSectionalAtlasTimePoints( false ),
     DefaultUseWeightedAveragesForIndividualGrowthModelTimePoints( false ),
-    m_ExternallySetUseWeightedAveragesForIndividualGrowthModelTimePoints( false )
+    m_ExternallySetUseWeightedAveragesForIndividualGrowthModelTimePoints( false ),
+    DefaultWriteDesiredComputationsToFileWithoutComputation( false ),
+    m_ExternallySetWriteDesiredComputationsToFileWithoutComputation( false ),
+    DefaultUsePrecomputedIndividualGrowthModels( false ),
+    m_ExternallySetUsePrecomputedIndividualGrowthModels( false ),
+    DefaultUsePrecomputedCrossSectionalAtlases( false ),
+    m_ExternallySetUsePrecomputedCrossSectionalAtlases( false ),
+    DefaultUsePrecomputedPopulationGrowthModel( false ),
+    m_ExternallySetUsePrecomputedPopulationGrowthModel( false )
 {
   this->m_IndividualGrowthModelJSONConfigurationFile = DefaultIndividualGrowthModelJSONConfigurationFile;
   this->m_CrossSectionalAtlasJSONConfigurationFile = DefaultCrossSectionalAtlasJSONConfigurationFile;
@@ -67,6 +75,11 @@ CLongitudinalAtlasBuilder< TFloat, VImageDimension >::CLongitudinalAtlasBuilder(
   this->m_DetermineCrossSectionalAtlasTimePointsByNumber = DefaultDetermineCrossSectionalAtlasTimePointsByNumber;
   this->m_NumberOfCrossSectionalAtlasTimePoints = DefaultNumberOfCrossSectionalAtlasTimePoints;
   this->m_UseWeightedAveragesForIndividualGrowthModelTimePoints = DefaultUseWeightedAveragesForIndividualGrowthModelTimePoints;
+
+  this->m_WriteDesiredComputationsToFileWithoutComputation = DefaultWriteDesiredComputationsToFileWithoutComputation;
+  this->m_UsePrecomputedIndividualGrowthModels = DefaultUsePrecomputedIndividualGrowthModels;
+  this->m_UsePrecomputedCrossSectionalAtlases = DefaultUsePrecomputedCrossSectionalAtlases;
+  this->m_UsePrecomputedPopulationGrowthModel = DefaultUsePrecomputedPopulationGrowthModel;
 
   m_DataCombinedJSONConfig = new CJSONConfiguration;
   m_DataCleanedJSONConfig = new CJSONConfiguration;
@@ -172,6 +185,11 @@ void CLongitudinalAtlasBuilder< TFloat, VImageDimension >::SetAutoConfiguration(
   SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, NumberOfCrossSectionalAtlasTimePoints );
   SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, UseWeightedAveragesForIndividualGrowthModelTimePoints );
 
+  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, WriteDesiredComputationsToFileWithoutComputation );
+  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, UsePrecomputedIndividualGrowthModels );
+  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, UsePrecomputedCrossSectionalAtlases );
+  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, UsePrecomputedPopulationGrowthModel );
+
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, IndividualGrowthModelJSONConfigurationFile,
                      "Configuration JSON file which controls the computation of the subject-specific growth models." );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, CrossSectionalAtlasJSONConfigurationFile,
@@ -201,6 +219,15 @@ void CLongitudinalAtlasBuilder< TFloat, VImageDimension >::SetAutoConfiguration(
                      "number of time-points which are distributed equally across time" );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, UseWeightedAveragesForIndividualGrowthModelTimePoints,
                      "if true puts nearest timepoints of an individual growth trajectory into cross-sectional atlas-building step with appropriate linear interpolation weights." );
+
+  SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, WriteDesiredComputationsToFileWithoutComputation,
+                     "if true, no computations are performed, instead a file is created which contains all the computations which need to be done. Can be parsed externally to create longitudinal atlas manually." );
+  SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, UsePrecomputedIndividualGrowthModels,
+                     "if true, the individual growth models are assumed to have been computed and are *not* recomputed." );
+  SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, UsePrecomputedCrossSectionalAtlases,
+                     "if true, the cross sectional atlases are assumed to have been computed and are *not* recomputed." );
+  SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, UsePrecomputedPopulationGrowthModel,
+                     "if true, the population growth model is assumed to have been computed and is *not* recomputed." );
 
   CreateDirectoriesIfNeeded();
 
@@ -276,6 +303,18 @@ CLongitudinalAtlasBuilder< TFloat, VImageDimension >::GetTargetImage( FloatType 
 
 template < class TFloat, unsigned int VImageDimension >
 std::string
+CLongitudinalAtlasBuilder< TFloat, VImageDimension >::CreateIndividualGrowthModelFileNameForSubject_CommandRecord( std::string subjectString )
+{
+  std::stringstream ss;
+  ss << "individualGrowthModel-subject-" << subjectString << "-commandRecord.txt";
+
+  std::string fullName = ApplicationUtils::combinePathAndFileName( m_IndividualGrowthModelOutputDirectory, ss.str() );
+
+  return fullName;
+}
+
+template < class TFloat, unsigned int VImageDimension >
+std::string
 CLongitudinalAtlasBuilder< TFloat, VImageDimension >::CreateIndividualGrowthModelFileNameForSubjectAtTimePoint( std::string subjectString, FloatType timePoint, int iIndex )
 {
   std::stringstream ss;
@@ -306,6 +345,18 @@ CLongitudinalAtlasBuilder< TFloat, VImageDimension >::CreatePopulationGrowthMode
   ss << "populationGrowthModel-map-fromTimePoint-" << fromTime << "-toTimePoint-" << toTime << ".nrrd";
 
   std::string fullName = ApplicationUtils::combinePathAndFileName( m_PopulationGrowthModelOutputDirectory, ss.str() );
+
+  return fullName;
+}
+
+template < class TFloat, unsigned int VImageDimension >
+std::string
+CLongitudinalAtlasBuilder< TFloat, VImageDimension >::CreateCrossSectionalAtlasFileNameAtTimePoint_CommandRecord( FloatType timePoint )
+{
+  std::stringstream ss;
+  ss << "crossSectionalAtlas-timePoint-" << timePoint << "-commandRecord.txt";
+
+  std::string fullName = ApplicationUtils::combinePathAndFileName( m_CrossSectionalAtlasOutputDirectory, ss.str() );
 
   return fullName;
 }
@@ -349,8 +400,22 @@ CLongitudinalAtlasBuilder< TFloat, VImageDimension >::CreatePopulationGrowthMode
 }
 
 template < class TFloat, unsigned int VImageDimension >
+std::string
+CLongitudinalAtlasBuilder< TFloat, VImageDimension >::CreatePopulationGrowthModelFileName_CommandRecord()
+{
+  std::stringstream ss;
+  ss << "populationGrowthModel-commandRecord.txt";
+
+  std::string fullName = ApplicationUtils::combinePathAndFileName( m_PopulationGrowthModelOutputDirectory, ss.str() );
+
+  return fullName;
+}
+
+template < class TFloat, unsigned int VImageDimension >
 void CLongitudinalAtlasBuilder< TFloat, VImageDimension >::GetTemporallyClosestIndicesAndWeights( std::vector< unsigned int >& closestIndices, std::vector< TFloat >& closestWeights, std::vector< SImageDatum > individualSubjectData, TFloat timePoint )
 {
+  // if UseWeightedAveragesForIndividualGrowthModelTimePoints is not set this function will only return the best candidate with a weight of one
+
   closestIndices.clear();
   closestWeights.clear();
 
@@ -446,6 +511,34 @@ void CLongitudinalAtlasBuilder< TFloat, VImageDimension >::GetTemporallyClosestI
     {
       closestWeights[ iW ] /= sumOfWeights;
     }
+
+  if ( !m_UseWeightedAveragesForIndividualGrowthModelTimePoints )
+    {
+      // we don't want to do any weightings here. Just pick the best candidate (based on the one which has the largest weight)
+      // if there are multiple measurements with the same weight the first one is chosen
+       std::vector< unsigned int > closestIndicesAll = closestIndices;
+       std::vector< TFloat > closestWeightsAll = closestWeights;
+
+       closestIndices.clear();
+       closestWeights.clear();
+
+       // which one has the largest weight
+       unsigned int indexLargestWeight=0;
+       FloatType largestWeight = closestWeightsAll[ indexLargestWeight ];
+
+       for ( unsigned int iI=1; iI<closestIndices.size(); ++iI )
+         {
+           if ( closestWeightsAll[ iI ]>largestWeight )
+             {
+               largestWeight = closestWeightsAll[ iI ];
+               indexLargestWeight = iI;
+             }
+         }
+
+       closestIndices.push_back( closestIndicesAll[ indexLargestWeight ] );
+       closestWeights.push_back( 1.0 ); // because it is only one
+    }
+
 }
 
 template < class TFloat, unsigned int VImageDimension >
@@ -460,36 +553,61 @@ CLongitudinalAtlasBuilder< TFloat, VImageDimension >::ComputeIndividualGrowthMod
   typedef CALATK::CLDDMMGenericRegistration< TStateSpatioTemporalVelocityField > regTypeSpatioTemporalVelocityField;
 
   typename regTypeSpatioTemporalVelocityField::Pointer plddmm;
-  plddmm = new regTypeSpatioTemporalVelocityField;
-
-  ImageManagerType* ptrImageManager = dynamic_cast<ImageManagerType*>( plddmm->GetImageManagerPointer() );
-
-  plddmm->SetAutoConfiguration( m_CombinedConfigurationIndividualGrowthModel, m_CleanedConfigurationIndividualGrowthModel );
-
-  plddmm->SetAllowHelpComments( this->GetAllowHelpComments() );
-  plddmm->SetMaxDesiredLogLevel( this->GetMaxDesiredLogLevel() );
-
-  // now add all the images for this particular time-series
-
-  if ( individualSubjectData.empty() )
-    {
-      throw std::runtime_error( "No individual subject data specified." );
-      return warpedImagesAndWeightsAtTimePoint; // will be empty at this point
-    }
-
+  ImageManagerType* ptrImageManager = NULL;
   std::vector< unsigned int > imageIDs;
 
-  for ( int iI=0; iI<individualSubjectData.size(); ++iI )
+  if ( !m_WriteDesiredComputationsToFileWithoutComputation && !m_UsePrecomputedIndividualGrowthModels )
   {
-      std::cout << "Adding: " << individualSubjectData[ iI ].fileName << " at t = " << individualSubjectData[ iI ].timePoint << " with subject id = " << individualSubjectData[ iI ].subjectId << std::endl;
-      unsigned int uiI0 = ptrImageManager->AddImage( individualSubjectData[ iI ].fileName, individualSubjectData[ iI ].timePoint, individualSubjectData[ iI ].subjectId );
-      imageIDs.push_back( uiI0 );
-      // TODO: Add transform, if transform is to be supported
+
+    plddmm = new regTypeSpatioTemporalVelocityField;
+
+    ptrImageManager = dynamic_cast<ImageManagerType*>( plddmm->GetImageManagerPointer() );
+
+    plddmm->SetAutoConfiguration( m_CombinedConfigurationIndividualGrowthModel, m_CleanedConfigurationIndividualGrowthModel );
+
+    plddmm->SetAllowHelpComments( this->GetAllowHelpComments() );
+    plddmm->SetMaxDesiredLogLevel( this->GetMaxDesiredLogLevel() );
+
+    // now add all the images for this particular time-series
+
+    if ( individualSubjectData.empty() )
+      {
+        throw std::runtime_error( "No individual subject data specified." );
+        return warpedImagesAndWeightsAtTimePoint; // will be empty at this point
+      }
+
+    for ( int iI=0; iI<individualSubjectData.size(); ++iI )
+    {
+        std::cout << "Adding: " << individualSubjectData[ iI ].fileName << " at t = " << individualSubjectData[ iI ].timePoint << " with subject id = " << individualSubjectData[ iI ].subjectId << std::endl;
+        unsigned int uiI0 = ptrImageManager->AddImage( individualSubjectData[ iI ].fileName, individualSubjectData[ iI ].timePoint, individualSubjectData[ iI ].subjectId );
+        imageIDs.push_back( uiI0 );
+        // TODO: Add transform, if transform is to be supported
+    }
+
+    plddmm->SetActiveSubjectId( individualSubjectData[ 0 ].subjectId );
+
+    plddmm->Solve();
+
   }
 
-  plddmm->SetActiveSubjectId( individualSubjectData[ 0 ].subjectId );
+  std::ofstream fileCommandRecord;
+  // open the file if needed
+  if ( m_WriteDesiredComputationsToFileWithoutComputation )
+    {
+      std::string filenameIndividualGrowthModel_CommandRecord = CreateIndividualGrowthModelFileNameForSubject_CommandRecord( individualSubjectData[ 0 ].subjectString );
+      fileCommandRecord.open( filenameIndividualGrowthModel_CommandRecord.c_str() );
+    }
 
-  plddmm->Solve();
+  if ( m_WriteDesiredComputationsToFileWithoutComputation )
+    {
+      // write out how to compute this individual growth model
+
+      for ( int iI=0; iI<individualSubjectData.size(); ++iI )
+      {
+          fileCommandRecord << individualSubjectData[ iI ].fileName << " at t = " << individualSubjectData[ iI ].timePoint << " with subject id = " << individualSubjectData[ iI ].subjectId << std::endl;
+      }
+
+    }
 
   // now create the output
 
@@ -533,33 +651,55 @@ CLongitudinalAtlasBuilder< TFloat, VImageDimension >::ComputeIndividualGrowthMod
 
         std::cout << "(" << closestIndices[ iC ] << "," << closestWeights[ iC ] << ") ";
 
-        // compute the map for this image
-        typename VectorFieldType::ConstPointer currentMap = new VectorFieldType( plddmm->GetMapFromTo( individualSubjectData[ closestIndices[ iC ] ].timePoint, desiredTimePoints[ iT ] ) );
+        if ( !m_WriteDesiredComputationsToFileWithoutComputation && !m_UsePrecomputedIndividualGrowthModels )
+          {
+          // compute the map for this image
+          typename VectorFieldType::ConstPointer currentMap = new VectorFieldType( plddmm->GetMapFromTo( individualSubjectData[ closestIndices[ iC ] ].timePoint, desiredTimePoints[ iT ] ) );
 
-        // now get the image this should be applied to, warp it and write it out with the just created filename
-        typename VectorImageType::ConstPointer currentImage = new VectorImageType( ptrImageManager->GetOriginalImageById( imageIDs[ closestIndices[ iC ] ] ) );
-        typename VectorImageType::Pointer warpedImage = new VectorImageType( currentImage );
+          // now get the image this should be applied to, warp it and write it out with the just created filename
+          typename VectorImageType::ConstPointer currentImage = new VectorImageType( ptrImageManager->GetOriginalImageById( imageIDs[ closestIndices[ iC ] ] ) );
+          typename VectorImageType::Pointer warpedImage = new VectorImageType( currentImage );
 
-        // apply the map
-        LDDMMUtils< FloatType, VImageDimension >::applyMap( currentMap, currentImage, warpedImage );
-        // now write it out
-        VectorImageUtilsType::writeFileITK( warpedImage, currentDatum.fileName );
+          // apply the map
+          LDDMMUtils< FloatType, VImageDimension >::applyMap( currentMap, currentImage, warpedImage );
+          // now write it out
+          VectorImageUtilsType::writeFileITK( warpedImage, currentDatum.fileName );
+          }
+
+        if ( m_WriteDesiredComputationsToFileWithoutComputation )
+          {
+            fileCommandRecord << "image at: t = " << desiredTimePoints[ iT ] << ":" << currentDatum.fileName << std::endl;
+          }
 
         }
 
       std::cout << std::endl;
 
-      // also write out all possible maps to this time-point (need this to pool the data for the statistics later)
+     // also write out all possible maps to this time-point (need this to pool the data for the statistics later)
       for ( int iS=0; iS < individualSubjectData.size(); ++iS )
         {
-          // compute the map for this image
-          typename VectorFieldType::ConstPointer currentMap = new VectorFieldType( plddmm->GetMapFromTo( individualSubjectData[ iS ].timePoint, desiredTimePoints[ iT ] ) );
           std::string mapFileName = CreateIndividualGrowthModelMapFileNameForSubjectFromToTimePoint( individualSubjectData[ iS ].subjectString, individualSubjectData[ iS ].timePoint, desiredTimePoints[ iT ], iS );
-          // now write it out
-          VectorImageUtilsType::writeFileITK( currentMap, mapFileName );
+
+          if ( !m_WriteDesiredComputationsToFileWithoutComputation && !m_UsePrecomputedIndividualGrowthModels )
+            {
+            // compute the map for this image
+            typename VectorFieldType::ConstPointer currentMap = new VectorFieldType( plddmm->GetMapFromTo( individualSubjectData[ iS ].timePoint, desiredTimePoints[ iT ] ) );
+            // now write it out
+            VectorImageUtilsType::writeFileITK( currentMap, mapFileName );
+            }
+
+          if ( m_WriteDesiredComputationsToFileWithoutComputation )
+            {
+              fileCommandRecord << "map from: t = " << individualSubjectData[ iS ].timePoint << " to: t = " << desiredTimePoints[ iT ] << ":" << mapFileName << std::endl;
+            }
         }
 
   }
+
+  if ( m_WriteDesiredComputationsToFileWithoutComputation )
+    {
+    fileCommandRecord.close();
+    }
 
   return warpedImagesAndWeightsAtTimePoint;
 
@@ -574,24 +714,50 @@ CLongitudinalAtlasBuilder< TFloat, VImageDimension >::ComputePopulationGrowthMod
   typedef CALATK::CLDDMMGenericRegistration< TStateSpatioTemporalVelocityField > regTypeSpatioTemporalVelocityField;
 
   typename regTypeSpatioTemporalVelocityField::Pointer plddmm;
-  plddmm = new regTypeSpatioTemporalVelocityField;
 
-  ImageManagerType* ptrImageManager = dynamic_cast<ImageManagerType*>( plddmm->GetImageManagerPointer() );
+  ImageManagerType* ptrImageManager = NULL;
 
-  plddmm->SetAutoConfiguration( m_CombinedConfigurationPopulationGrowthModel, m_CleanedConfigurationPopulationGrowthModel );
-
-  plddmm->SetAllowHelpComments( this->GetAllowHelpComments() );
-  plddmm->SetMaxDesiredLogLevel( this->GetMaxDesiredLogLevel() );
-
-  // now add all the images for this particular time-series
-
-  for ( int iI=0; iI<populationGrowthModelData.size(); ++iI )
+  if ( !m_WriteDesiredComputationsToFileWithoutComputation && !m_UsePrecomputedPopulationGrowthModel )
   {
-    unsigned int uiI0 = ptrImageManager->AddImage( populationGrowthModelData[ iI ].fileName, populationGrowthModelData[ iI ].timePoint, 0 );
-    // TODO: Add transform, if transform is to be supported
+
+    plddmm = new regTypeSpatioTemporalVelocityField;
+    ptrImageManager = dynamic_cast<ImageManagerType*>( plddmm->GetImageManagerPointer() );
+
+    plddmm->SetAutoConfiguration( m_CombinedConfigurationPopulationGrowthModel, m_CleanedConfigurationPopulationGrowthModel );
+
+    plddmm->SetAllowHelpComments( this->GetAllowHelpComments() );
+    plddmm->SetMaxDesiredLogLevel( this->GetMaxDesiredLogLevel() );
+
+    // now add all the images for this particular time-series
+
+    for ( int iI=0; iI<populationGrowthModelData.size(); ++iI )
+    {
+      unsigned int uiI0 = ptrImageManager->AddImage( populationGrowthModelData[ iI ].fileName, populationGrowthModelData[ iI ].timePoint, 0 );
+      // TODO: Add transform, if transform is to be supported
+    }
+
+    plddmm->Solve();
+
   }
 
-  plddmm->Solve();
+  std::ofstream fileCommandRecord;
+  // open the file if needed
+  if ( m_WriteDesiredComputationsToFileWithoutComputation )
+    {
+      std::string filenamePopulationGrowthModel_CommandRecord = CreatePopulationGrowthModelFileName_CommandRecord();
+      fileCommandRecord.open( filenamePopulationGrowthModel_CommandRecord.c_str() );
+    }
+
+  if ( m_WriteDesiredComputationsToFileWithoutComputation )
+    {
+      // write out how to compute this individual growth model
+
+      for ( int iI=0; iI<populationGrowthModelData.size(); ++iI )
+      {
+          fileCommandRecord << populationGrowthModelData[ iI ].fileName << " at t = " << populationGrowthModelData[ iI ].timePoint << std::endl;
+      }
+
+    }
 
   // write out some images
 
@@ -600,11 +766,20 @@ CLongitudinalAtlasBuilder< TFloat, VImageDimension >::ComputePopulationGrowthMod
 
   for ( int iI=0; iI<populationGrowthModelData.size(); ++iI )
   {
-      // create output for images here
-      typename VectorImageType::ConstPointer currentImage = new VectorImageType( plddmm->GetSourceImage( populationGrowthModelData[ iI ].timePoint ) );
-      // now write it out
       std::string currentImageFileName = CreatePopulationGrowthModelFileNameAtTimePoint( populationGrowthModelData[ iI ].timePoint );
-      VectorImageUtilsType::writeFileITK( currentImage, currentImageFileName );
+
+      if ( !m_WriteDesiredComputationsToFileWithoutComputation && !m_UsePrecomputedPopulationGrowthModel )
+        {
+        // create output for images here
+        typename VectorImageType::ConstPointer currentImage = new VectorImageType( plddmm->GetSourceImage( populationGrowthModelData[ iI ].timePoint ) );
+        // now write it out
+        VectorImageUtilsType::writeFileITK( currentImage, currentImageFileName );
+        }
+
+      if ( m_WriteDesiredComputationsToFileWithoutComputation )
+        {
+          fileCommandRecord << "image at: t = " << populationGrowthModelData[ iI ].timePoint << ":" << currentImageFileName << std::endl;
+        }
 
       SImageDatum currentDatum;
       currentDatum.timePoint = populationGrowthModelData[ iI ].timePoint;
@@ -616,20 +791,71 @@ CLongitudinalAtlasBuilder< TFloat, VImageDimension >::ComputePopulationGrowthMod
       populationGrowthModelResults.push_back( currentDatum );
   }
 
-  // write out the maps from every point to every other point
-
-  for ( int iI=0; iI<populationGrowthModelData.size(); ++iI )
-  {
-    FloatType fromTimePoint = populationGrowthModelData[ iI ].timePoint;
-    for ( int iJ=0; iJ<populationGrowthModelData.size(); ++iJ )
+  if ( this->m_OnlyComputePopulationAtlasForFirstAvailableTimePoint || this->m_OnlyComputePopulationAtlasForLastAvailableTimePoint )
     {
-      FloatType toTimePoint = populationGrowthModelData[ iJ ].timePoint;
-      typename VectorFieldType::ConstPointer currentMap = new VectorFieldType( plddmm->GetMapFromTo( fromTimePoint, toTimePoint ) );
-      std::string mapFileName = CreatePopulationGrowthModelMapFileNameFromToTimePoint( fromTimePoint, toTimePoint );
-      // now write it out
-      VectorImageUtilsType::writeFileITK( currentMap, mapFileName );
+      FloatType toTimePoint;
+      if ( this->m_OnlyComputePopulationAtlasForLastAvailableTimePoint )
+        {
+        // write out maps only to the first time-point
+        toTimePoint = populationGrowthModelData.back().timePoint;
+        }
+      else
+        {
+        // write out maps only to the last time-point
+        FloatType toTimePoint = populationGrowthModelData[ 0 ].timePoint;
+        }
+
+      for ( int iJ=0; iJ<populationGrowthModelData.size(); ++iJ )
+        {
+          FloatType fromTimePoint = populationGrowthModelData[ iJ ].timePoint;
+          std::string mapFileName = CreatePopulationGrowthModelMapFileNameFromToTimePoint( fromTimePoint, toTimePoint );
+
+          if ( !m_WriteDesiredComputationsToFileWithoutComputation && !m_UsePrecomputedPopulationGrowthModel )
+            {
+            typename VectorFieldType::ConstPointer currentMap = new VectorFieldType( plddmm->GetMapFromTo( fromTimePoint, toTimePoint ) );
+            // now write it out
+            VectorImageUtilsType::writeFileITK( currentMap, mapFileName );
+            }
+
+          if ( m_WriteDesiredComputationsToFileWithoutComputation )
+            {
+              fileCommandRecord << "map from: t = " << fromTimePoint << " to: t = " << toTimePoint << ":" << mapFileName << std::endl;
+            }
+        }
+
     }
-  }
+  else
+    {
+    // write out the maps from every point to every other point
+
+    for ( int iI=0; iI<populationGrowthModelData.size(); ++iI )
+      {
+      FloatType fromTimePoint = populationGrowthModelData[ iI ].timePoint;
+      for ( int iJ=0; iJ<populationGrowthModelData.size(); ++iJ )
+        {
+        FloatType toTimePoint = populationGrowthModelData[ iJ ].timePoint;
+        std::string mapFileName = CreatePopulationGrowthModelMapFileNameFromToTimePoint( fromTimePoint, toTimePoint );
+
+        if ( !m_WriteDesiredComputationsToFileWithoutComputation && !m_UsePrecomputedPopulationGrowthModel )
+          {
+          typename VectorFieldType::ConstPointer currentMap = new VectorFieldType( plddmm->GetMapFromTo( fromTimePoint, toTimePoint ) );
+          // now write it out
+          VectorImageUtilsType::writeFileITK( currentMap, mapFileName );
+          }
+
+        if ( m_WriteDesiredComputationsToFileWithoutComputation )
+          {
+            fileCommandRecord << "map from: t = " << fromTimePoint << " to: t = " << toTimePoint << ":" << mapFileName << std::endl;
+          }
+
+        }
+      }
+    }
+
+  if ( m_WriteDesiredComputationsToFileWithoutComputation )
+    {
+    fileCommandRecord.close();
+    }
 
   return populationGrowthModelResults;
 
@@ -659,43 +885,68 @@ CLongitudinalAtlasBuilder< TFloat, VImageDimension >::ComputeCrossSectionalAtlas
       return empty;
     }
 
-  crossSectionalAtlasBuilderFullGradient = new regTypeFullGradient; // TODO make this more flexible also allow other atlas-builders
-  ptrImageManager = dynamic_cast< ImageManagerType* >( crossSectionalAtlasBuilderFullGradient->GetImageManagerPointer() );
-
-  std::vector< FloatType > weights; // keeps track of the weights of the individual images
-
-  // add the data to the image manager
-  // add all images at time-point 1, this instructs the atlas-builder to compute the atlas as the source image
-  for ( int iI=0; iI < crossSectionalSubjectData.size(); ++iI )
+  if ( !m_WriteDesiredComputationsToFileWithoutComputation && !m_UsePrecomputedCrossSectionalAtlases )
   {
-    // TODO: make this more flexible, so we can also have atlas as target image
-    unsigned int uiI0 = ptrImageManager->AddImage( crossSectionalSubjectData[ iI ].first.fileName, 1.0, crossSectionalSubjectData[ iI ].first.subjectId );
-    // TODO: Add transform, if transform is to be supported
-    weights.push_back( crossSectionalSubjectData[ iI ].second );
+
+    crossSectionalAtlasBuilderFullGradient = new regTypeFullGradient; // TODO make this more flexible also allow other atlas-builders
+    ptrImageManager = dynamic_cast< ImageManagerType* >( crossSectionalAtlasBuilderFullGradient->GetImageManagerPointer() );
+
+    std::vector< FloatType > weights; // keeps track of the weights of the individual images
+
+    // add the data to the image manager
+    // add all images at time-point 1, this instructs the atlas-builder to compute the atlas as the source image
+    for ( int iI=0; iI < crossSectionalSubjectData.size(); ++iI )
+    {
+      // TODO: make this more flexible, so we can also have atlas as target image
+      unsigned int uiI0 = ptrImageManager->AddImage( crossSectionalSubjectData[ iI ].first.fileName, 1.0, crossSectionalSubjectData[ iI ].first.subjectId );
+      // TODO: Add transform, if transform is to be supported
+      weights.push_back( crossSectionalSubjectData[ iI ].second );
+    }
+
+    crossSectionalAtlasBuilderFullGradient->SetWeights( weights );
+
+    crossSectionalAtlasBuilderFullGradient->SetAtlasIsSourceImage( true );
+
+    crossSectionalAtlasBuilderFullGradient->SetAutoConfiguration( m_CombinedConfigurationCrossSectionalAtlas, m_CleanedConfigurationCrossSectionalAtlas );
+    crossSectionalAtlasBuilderFullGradient->SetAllowHelpComments( this->GetAllowHelpComments() );
+    crossSectionalAtlasBuilderFullGradient->SetMaxDesiredLogLevel( this->GetMaxDesiredLogLevel() );
+
+    crossSectionalAtlasBuilderFullGradient->Solve();
   }
 
-  crossSectionalAtlasBuilderFullGradient->SetWeights( weights );
+  std::ofstream fileCommandRecord;
+  // open the file if needed
+  if ( m_WriteDesiredComputationsToFileWithoutComputation )
+    {
+      std::string filenameCrossSectionalAtlas_CommandRecord = CreateCrossSectionalAtlasFileNameAtTimePoint_CommandRecord( atlasTimePoint );
+      fileCommandRecord.open( filenameCrossSectionalAtlas_CommandRecord.c_str() );
+    }
 
-  crossSectionalAtlasBuilderFullGradient->SetAtlasIsSourceImage( true );
+  if ( m_WriteDesiredComputationsToFileWithoutComputation )
+    {
+      // write out how to compute this individual growth model
 
-  crossSectionalAtlasBuilderFullGradient->SetAutoConfiguration( m_CombinedConfigurationCrossSectionalAtlas, m_CleanedConfigurationCrossSectionalAtlas );
-  crossSectionalAtlasBuilderFullGradient->SetAllowHelpComments( this->GetAllowHelpComments() );
-  crossSectionalAtlasBuilderFullGradient->SetMaxDesiredLogLevel( this->GetMaxDesiredLogLevel() );
+      for ( int iI=0; iI<crossSectionalSubjectData.size(); ++iI )
+      {
+          fileCommandRecord << crossSectionalSubjectData[ iI ].first.fileName << " with weight w = " << crossSectionalSubjectData[ iI ].second << " with subject id = " << crossSectionalSubjectData[ iI ].first.subjectId << std::endl;
+      }
 
-  crossSectionalAtlasBuilderFullGradient->Solve();
+    }
 
   // now write it out
   std::string currentCrossSectionalAtlasFileName = CreateCrossSectionalAtlasFileNameAtTimePoint( atlasTimePoint );
-  typename VectorImageType::ConstPointer ptrAtlasImage = crossSectionalAtlasBuilderFullGradient->GetAtlasImage();
-  VectorImageUtilsType::writeFileITK( ptrAtlasImage, currentCrossSectionalAtlasFileName );
+
+  if ( !m_WriteDesiredComputationsToFileWithoutComputation && !m_UsePrecomputedCrossSectionalAtlases )
+  {
+    typename VectorImageType::ConstPointer ptrAtlasImage = crossSectionalAtlasBuilderFullGradient->GetAtlasImage();
+    VectorImageUtilsType::writeFileITK( ptrAtlasImage, currentCrossSectionalAtlasFileName );
+  }
 
   std::map< int, int > currentSubIndices;
 
   // also write out the maps for all the different subjects to atlas-space, if there are multiple ones create a sub-index
   for ( int iI=0; iI< crossSectionalSubjectData.size(); ++iI )
     {
-      // TODO: Also support atlas-builder which has atlas as target
-      typename VectorFieldType::ConstPointer currentMap = new VectorFieldType( crossSectionalAtlasBuilderFullGradient->GetMapFromTo( 1.0, 0.0, iI ) );
       // subject-subindex (indices to closest measured images)
 
       int currentSubjectId = crossSectionalSubjectData[ iI ].first.subjectId;
@@ -713,8 +964,20 @@ CLongitudinalAtlasBuilder< TFloat, VImageDimension >::ComputeCrossSectionalAtlas
 
       std::string currentMapFileName = CreateCrossSectionalAtlasMapFileNameForSubjectAtTimePoint( crossSectionalSubjectData[ iI ].first.subjectString, atlasTimePoint, iSubjectSubIndex );
       // write it out
-      VectorImageUtilsType::writeFileITK( currentMap, currentMapFileName );
+      if ( !m_WriteDesiredComputationsToFileWithoutComputation && !m_UsePrecomputedCrossSectionalAtlases )
+      {
+        // TODO: Also support atlas-builder which has atlas as target
+        typename VectorFieldType::ConstPointer currentMap = new VectorFieldType( crossSectionalAtlasBuilderFullGradient->GetMapFromTo( 1.0, 0.0, iI ) );
+        // subject-subindex (indices to closest measured images)
+        VectorImageUtilsType::writeFileITK( currentMap, currentMapFileName );
+      }
+
+      if ( m_WriteDesiredComputationsToFileWithoutComputation )
+        {
+          fileCommandRecord << "map subject/atlas: " << currentMapFileName << std::endl;
+        }
     }
+
 
   // keep track of what was written out
   SImageDatum currentCrossSectionalAtlas;
@@ -723,6 +986,11 @@ CLongitudinalAtlasBuilder< TFloat, VImageDimension >::ComputeCrossSectionalAtlas
   currentCrossSectionalAtlas.transformFileName = ""; // TODO: add transform
   currentCrossSectionalAtlas.subjectId = 0; // all the same, this is for the population growth model
   currentCrossSectionalAtlas.subjectString = "crossSectionalAtlas";
+
+  if ( m_WriteDesiredComputationsToFileWithoutComputation )
+    {
+    fileCommandRecord.close();
+    }
 
   return currentCrossSectionalAtlas;
 }

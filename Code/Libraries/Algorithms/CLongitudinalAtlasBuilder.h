@@ -145,6 +145,18 @@ public:
   SetMacro( UseWeightedAveragesForIndividualGrowthModelTimePoints, bool );
   GetMacro( UseWeightedAveragesForIndividualGrowthModelTimePoints, bool );
 
+  SetMacro( WriteDesiredComputationsToFileWithoutComputation, bool );
+  GetMacro( WriteDesiredComputationsToFileWithoutComputation, bool );
+
+  SetMacro( UsePrecomputedIndividualGrowthModels, bool );
+  GetMacro( UsePrecomputedIndividualGrowthModels, bool );
+
+  SetMacro( UsePrecomputedCrossSectionalAtlases, bool );
+  GetMacro( UsePrecomputedCrossSectionalAtlases, bool );
+
+  SetMacro( UsePrecomputedPopulationGrowthModel, bool );
+  GetMacro( UsePrecomputedPopulationGrowthModel, bool );
+
 protected:
 
   virtual void SetDefaultsIfNeeded();
@@ -194,6 +206,11 @@ private:
   std::string CreateCrossSectionalAtlasFileNameAtTimePoint( FloatType timePoint );
   std::string CreateCrossSectionalAtlasMapFileNameForSubjectAtTimePoint( std::string subjectString, FloatType timePoint, int iIndex );
   std::string CreatePopulationGrowthModelFileNameAtTimePoint( FloatType timePoint );
+
+  // helper functions to record computations
+  std::string CreateIndividualGrowthModelFileNameForSubject_CommandRecord( std::string subjectString );
+  std::string CreateCrossSectionalAtlasFileNameAtTimePoint_CommandRecord( FloatType timePoint );
+  std::string CreatePopulationGrowthModelFileName_CommandRecord();
 
   // discretization information
   std::vector< std::vector< SImageDatum > > m_DataBySubject;
@@ -254,6 +271,22 @@ private:
   bool       m_UseWeightedAveragesForIndividualGrowthModelTimePoints;
   const bool DefaultUseWeightedAveragesForIndividualGrowthModelTimePoints;
   bool       m_ExternallySetUseWeightedAveragesForIndividualGrowthModelTimePoints;
+
+  bool       m_WriteDesiredComputationsToFileWithoutComputation;
+  const bool DefaultWriteDesiredComputationsToFileWithoutComputation;
+  bool       m_ExternallySetWriteDesiredComputationsToFileWithoutComputation;
+
+  bool       m_UsePrecomputedIndividualGrowthModels;
+  const bool DefaultUsePrecomputedIndividualGrowthModels;
+  bool       m_ExternallySetUsePrecomputedIndividualGrowthModels;
+
+  bool       m_UsePrecomputedCrossSectionalAtlases;
+  const bool DefaultUsePrecomputedCrossSectionalAtlases;
+  bool       m_ExternallySetUsePrecomputedCrossSectionalAtlases;
+
+  bool       m_UsePrecomputedPopulationGrowthModel;
+  const bool DefaultUsePrecomputedPopulationGrowthModel;
+  bool       m_ExternallySetUsePrecomputedPopulationGrowthModel;
 
   CJSONConfiguration::Pointer m_CombinedConfigurationIndividualGrowthModel;
   CJSONConfiguration::Pointer m_CleanedConfigurationIndividualGrowthModel;

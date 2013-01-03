@@ -1,0 +1,19 @@
+// CALATK version 0.1; JSON configuration file --CLEANED
+
+{
+	"LongitudinalAtlasSettings" :
+	{
+		"CrossSectionalAtlasJSONConfigurationFile" : "longitudinalAtlasCleaned-crossSectionalAtlas.json",
+		"CrossSectionalAtlasOutputDirectory" : "result-crossSectional",
+		"DesiredCrossSectionalAtlasTimePoints" : null,
+		"DesiredPopulationAtlasTimePoints" : null,
+		"DetermineCrossSectionalAtlasTimePointsByNumber" : true,
+		"IndividualGrowthModelJSONConfigurationFile" : "longitudinalAtlasCleaned-individualGrowthModel.json",
+		"IndividualGrowthModelOutputDirectory" : "result-individualGrowth",
+		"NumberOfCrossSectionalAtlasTimePoints" : 10,
+		"OnlyComputePopulationAtlasForFirstAvailableTimePoint" : false,
+		"OnlyComputePopulationAtlasForLastAvailableTimePoint" : true,
+		"PopulationGrowthModelJSONConfigurationFile" : "longitudinalAtlasCleaned-populationGrowthModel.json",
+		"PopulationGrowthModelOutputDirectory" : "result-populationGrowth"
+	}
+}

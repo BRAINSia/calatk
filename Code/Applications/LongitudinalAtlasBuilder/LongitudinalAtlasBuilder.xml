@@ -85,11 +85,54 @@
         </boolean>
 
         <boolean>
-          <name>bSaveIndividualGrowthModelResults</name>
-          <longflag>--saveIndividualGrowthModelResults</longflag>
+          <name>bOnlyComputePopulationAtlasForFirstAvailableTimePoint</name>
+          <longflag>--onlyComputePopulationAtlasForFirstAvailableTimePoint</longflag>
           <default>false</default>
-          <description>If set, will save out the state of the computed individual growth models. This can then be used later to quickly create cross-sectional atlases at different timepoints.</description>
+          <description>If set, maps are only computed to allow to map to the first time-point of the population atlas.</description>
         </boolean>
+
+        <boolean>
+          <name>bOnlyComputePopulationAtlasForLastAvailableTimePoint</name>
+          <longflag>--onlyComputePopulationAtlasForLastAvailableTimePoint</longflag>
+          <default>false</default>
+          <description>If set, maps are only computed to allow to map to the last time-point of the population atlas.</description>
+        </boolean>
+
+        <boolean>
+          <name>bUseWeightedAveragesForIndividualGrowthModelTimePoints</name>
+          <longflag>--useWeightedAverages</longflag>
+          <default>false</default>
+          <description>If set, computations for specific time-points will be done with weighted averages with respect to the closest measurements points. Weighting is linear. Only affects cross-sectional atlas-building results.</description>
+        </boolean>
+
+        <boolean>
+          <name>bWriteDesiredComputationsToFileWithoutComputation</name>
+          <longflag>--doNotCompute</longflag>
+          <default>false</default>
+          <description>If set, runs through all the steps and records them without doing any actual computations.</description>
+        </boolean>
+
+        <boolean>
+          <name>bUsePrecomputedIndividualGrowthModels</name>
+          <longflag>--usePrecomputedIndividualGrowthModels</longflag>
+          <default>false</default>
+          <description>If set, uses the results for the individual growth models which have been computed manually or by a previous run. Requires consistent file names.</description>
+        </boolean>
+
+        <boolean>
+          <name>bUsePrecomputedCrossSectionalAtlases</name>
+          <longflag>--usePrecomputedCrossSectionalAtlases</longflag>
+          <default>false</default>
+          <description>If set, uses the results for the cross sectional atlases which have been computed manually or by a previous run. Requires consistent file names.</description>
+        </boolean>
+
+        <boolean>
+          <name>bUsePrecomputedPopulationGrowthModel</name>
+          <longflag>--usePrecomputedGrowthModel</longflag>
+          <default>false</default>
+          <description>If set, uses the results for the population growth model which has been computed manually or by a previous run. Requires consistent file names.</description>
+        </boolean>
+
 
   </parameters>
 </executable>
