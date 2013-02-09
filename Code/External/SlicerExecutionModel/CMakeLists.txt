@@ -1,4 +1,4 @@
-PROJECT( SlicerExecutionModel )
+project( SlicerExecutionModel )
 set(LOCAL_PROJECT_NAME SlicerExecutionModel)
 cmake_minimum_required(VERSION 2.6)
 if("${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}" GREATER 2.6)
@@ -31,10 +31,10 @@ endif(NOT SETIFEMPTY)
 
 
 SETIFEMPTY(TCLAP_DIR ${CMAKE_CURRENT_BINARY_DIR}/tclap CACHE PATH "Location of TCLAPConfig.cmake" FORCE)
-ADD_SUBDIRECTORY(tclap)
+add_subdirectory(tclap)
 
 SETIFEMPTY(ModuleDescriptionParser_DIR ${CMAKE_CURRENT_BINARY_DIR}/ModuleDescriptionParser CACHE PATH "Location of ModuleDescriptionParserConfig.cmake" FORCE)
-ADD_SUBDIRECTORY(ModuleDescriptionParser)
+add_subdirectory(ModuleDescriptionParser)
 
 SETIFEMPTY(GenerateCLP_DIR ${CMAKE_CURRENT_BINARY_DIR}/GenerateCLP CACHE PATH "Location of GenerateCLPConfig.cmake" FORCE)
-ADD_SUBDIRECTORY(GenerateCLP)
+add_subdirectory(GenerateCLP)

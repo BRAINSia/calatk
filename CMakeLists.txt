@@ -3,7 +3,7 @@
 
 cmake_minimum_required(VERSION 2.6)
 if(COMMAND cmake_policy)
-  CMAKE_POLICY(SET CMP0012 NEW)
+  cmake_policy(SET CMP0012 NEW)
 endif(COMMAND cmake_policy)
 
 project(CALATK)

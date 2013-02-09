@@ -1,55 +1,55 @@
-PROJECT(lstatGEE)
+project(lstatGEE)
 
 #
 # Add the lstatGEE application
 #
 
-IF(USE_BOOST)
-  SET(libraries ${ITK_LIBRARIES} ${BOOST_LIBRARIES})
-ELSE(USE_BOOST)
-  SET(libraries ${ITK_LIBRARIES})
-ENDIF(USE_BOOST)
+if(USE_BOOST)
+  set(libraries ${ITK_LIBRARIES} ${BOOST_LIBRARIES})
+else(USE_BOOST)
+  set(libraries ${ITK_LIBRARIES})
+endif(USE_BOOST)
 
 # Need to manually set up CLP here, because we have multiple source files
 
-SET(appName lstatGEE)
-SET(mainFile lstatGEE)
+set(appName lstatGEE)
+set(mainFile lstatGEE)
 
 # if we're coming from application off, force this application to compile
-IF(NOT COMPILE_APPLICATIONS)
-  SET(force_application${appName} ON CACHE INTERNAL "temp variable for application switches" FORCE)
-ENDIF(NOT COMPILE_APPLICATIONS)
+if(NOT COMPILE_APPLICATIONS)
+  set(force_application${appName} ON CACHE INTERNAL "temp variable for application switches" FORCE)
+endif(NOT COMPILE_APPLICATIONS)
 
 # set up the option and mark it as advanced
-MARK_AS_ADVANCED( compile_${appName} )
-OPTION(compile_${appName} "Compile ${appName}" ON)
+mark_as_advanced( compile_${appName} )
+option(compile_${appName} "Compile ${appName}" ON)
 
 # only turn the test on if COMPILE_APPLICATIONS was just turned on
-IF(COMPILE_APPLICATIONS)
-  IF(force_application${appName})
-    SET(compile_${appName} ON CACHE BOOL "Compile ${appName}" FORCE)
-    SET(force_application${appName} OFF CACHE INTERNAL "temp variable for application switches" FORCE)
-  ENDIF(force_application${appName})
+if(COMPILE_APPLICATIONS)
+  if(force_application${appName})
+    set(compile_${appName} ON CACHE BOOL "Compile ${appName}" FORCE)
+    set(force_application${appName} OFF CACHE INTERNAL "temp variable for application switches" FORCE)
+  endif(force_application${appName})
 
-  IF(COMPILE_CLP_MODULES)
-    IF(compile_${appName})
-      SET(CLP ${mainFile})
-      SET( ${CLP}_SOURCE ${CLP}.cxx )
+  if(COMPILE_CLP_MODULES)
+    if(compile_${appName})
+      set(CLP ${mainFile})
+      set( ${CLP}_SOURCE ${CLP}.cxx )
       GENERATECLP(${CLP}_SOURCE ${CLP}.xml "")
 
       # compile the program
 
-  #    ADD_EXECUTABLE(${appName} ${CLP}.cxx surallfileM10Y06_MN_JP.cpp pxanalyse_MN.cpp GEEutil_MN.cpp)
-      ADD_EXECUTABLE(${appName} ${CLP}.cxx surallfileM10Y06_MN_JP.cpp GEEutil_MN.cpp)
-      TARGET_LINK_LIBRARIES( ${appName} CALATK ${libraries})
+  #    add_executable(${appName} ${CLP}.cxx surallfileM10Y06_MN_JP.cpp pxanalyse_MN.cpp GEEutil_MN.cpp)
+      add_executable(${appName} ${CLP}.cxx surallfileM10Y06_MN_JP.cpp GEEutil_MN.cpp)
+      target_link_libraries( ${appName} CALATK ${libraries})
 
-    ENDIF(compile_${appName})
-  ENDIF(COMPILE_CLP_MODULES)
+    endif(compile_${appName})
+  endif(COMPILE_CLP_MODULES)
 
   # if COMPILE_APPLICATIONS is off, force the test to turn on next time COMPILE_APPLICATIONS is turned on
-ELSE(COMPILE_APPLICATIONS)
-  SET(compile_${appName} OFF CACHE BOOL "Compile ${appName}" FORCE)
-ENDIF(COMPILE_APPLICATIONS)
+else(COMPILE_APPLICATIONS)
+  set(compile_${appName} OFF CACHE BOOL "Compile ${appName}" FORCE)
+endif(COMPILE_APPLICATIONS)
 
-#ADD_EXECUTABLE(tstMatrix tstMatrixLogExp.cxx)
+#add_executable(tstMatrix tstMatrixLogExp.cxx)
 

@@ -1,12 +1,12 @@
 project(ModuleDescriptionParser)
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
-IF(COMMAND CMAKE_POLICY)
-  CMAKE_POLICY(SET CMP0003 NEW)
-ENDIF(COMMAND CMAKE_POLICY)
-MARK_AS_ADVANCED(CMAKE_BACKWARDS_COMPATIBILITY)
+cmake_minimum_required(VERSION 2.6)
+if(COMMAND CMAKE_POLICY)
+  cmake_policy(SET CMP0003 NEW)
+endif(COMMAND CMAKE_POLICY)
+mark_as_advanced(CMAKE_BACKWARDS_COMPATIBILITY)
 
- 
+
 ## ITK is required for expat.h
 
 find_package(ITK REQUIRED)
@@ -19,13 +19,13 @@ endif(ModuleDescriptionParser_USE_PYTHON)
 if(NOT DEFINED BUILD_SHARED_LIBS)
   option(BUILD_SHARED_LIBS "Build with shared libraries." ON)
 endif(NOT DEFINED BUILD_SHARED_LIBS)
- 
+
 # --------------------------------------------------------------------------
 # Include dirs
 
 set(include_dirs
   ${CMAKE_CURRENT_BINARY_DIR}
-  ${CMAKE_CURRENT_SOURCE_DIR} 
+  ${CMAKE_CURRENT_SOURCE_DIR}
   )
 
 if(ModuleDescriptionParser_USE_PYTHON)
@@ -38,13 +38,13 @@ endif(ModuleDescriptionParser_USE_PYTHON)
 include_directories(${include_dirs})
 
 configure_file(
-  ${CMAKE_CURRENT_SOURCE_DIR}/ModuleDescriptionParserConfigure.h.in 
+  ${CMAKE_CURRENT_SOURCE_DIR}/ModuleDescriptionParserConfigure.h.in
   ${CMAKE_CURRENT_BINARY_DIR}/ModuleDescriptionParserConfigure.h
   )
 
 file(GLOB headers "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
-install(FILES 
-  ${headers} 
+install(FILES
+  ${headers}
   "${CMAKE_CURRENT_BINARY_DIR}/ModuleDescriptionParserConfigure.h"
   DESTINATION include/${PROJECT_NAME} COMPONENT Development
   )
@@ -76,7 +76,7 @@ if(USE_BFD)
         ${CMAKE_CURRENT_BINARY_DIR}/CMake
         ${CMAKE_CURRENT_SOURCE_DIR}/CMake
         TestBFD
-        CMAKE_FLAGS 
+        CMAKE_FLAGS
         -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         OUTPUT_VARIABLE OUTPUT)
@@ -89,8 +89,8 @@ if(USE_BFD)
     endif(HAVE_BFD_HEADER)
 
     if(HAVE_BFD)
-      set(ModuleDescriptionParser_SRCS 
-        ${ModuleDescriptionParser_SRCS} 
+      set(ModuleDescriptionParser_SRCS
+        ${ModuleDescriptionParser_SRCS}
         BinaryFileDescriptor.cxx)
     endif(HAVE_BFD)
   endif(NOT WIN32)
@@ -124,13 +124,13 @@ endif(NOT WIN32 AND HAVE_BFD)
 target_link_libraries(${lib_name} ${link_libs})
 
 # Apply user-defined properties to the library target.
-IF(Slicer3_LIBRARY_PROPERTIES)
-  SET_TARGET_PROPERTIES(${lib_name} PROPERTIES
+if(Slicer3_LIBRARY_PROPERTIES)
+  set_target_properties(${lib_name} PROPERTIES
      ${Slicer3_LIBRARY_PROPERTIES}
   )
-ENDIF(Slicer3_LIBRARY_PROPERTIES)
+endif(Slicer3_LIBRARY_PROPERTIES)
 
-install(TARGETS ${lib_name} 
+install(TARGETS ${lib_name}
   RUNTIME DESTINATION bin COMPONENT RuntimeLibraries
   LIBRARY DESTINATION lib/${PROJECT_NAME} COMPONENT RuntimeLibraries
   ARCHIVE DESTINATION lib/${PROJECT_NAME} COMPONENT Development
@@ -140,19 +140,19 @@ install(TARGETS ${lib_name}
 # Testing
 
 if(BUILD_TESTING)
-  ADD_SUBDIRECTORY(Testing)
+  add_subdirectory(Testing)
 endif(BUILD_TESTING)
 
 # --------------------------------------------------------------------------
 # Install support files
 
-include(GenerateModuleDescriptionParserConfig.cmake) 
+include(GenerateModuleDescriptionParserConfig.cmake)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/UseModuleDescriptionParser.cmake.in
   ${CMAKE_CURRENT_BINARY_DIR}/UseModuleDescriptionParser.cmake COPYONLY IMMEDIATE)
 
-install(FILES 
-  ${CMAKE_CURRENT_BINARY_DIR}/UseModuleDescriptionParser.cmake 
-  ${CMAKE_CURRENT_BINARY_DIR}/install/ModuleDescriptionParserConfig.cmake 
+install(FILES
+  ${CMAKE_CURRENT_BINARY_DIR}/UseModuleDescriptionParser.cmake
+  ${CMAKE_CURRENT_BINARY_DIR}/install/ModuleDescriptionParserConfig.cmake
   DESTINATION lib/${PROJECT_NAME} COMPONENT Development
   )
