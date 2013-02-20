@@ -54,7 +54,7 @@ set ( COMMON_PROJECT_COMPILER_FLAGS
   ##
   set( proj ITK )
   ExternalProject_Add( ${proj}
-   #GIT_REPOSITORY "${GIT_PROTOCOL}://itk.org/ITK.git"
+    GIT_REPOSITORY "${GIT_PROTOCOL}://itk.org/ITK.git"
     GIT_TAG "v4.3.1"
     SOURCE_DIR "${CMAKE_BINARY_DIR}/ITK"
     BINARY_DIR ITK-Build
