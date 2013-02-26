@@ -80,6 +80,13 @@ CLDDMMGeometricMetamorphosisObjectiveFunction< TState >::CLDDMMGeometricMetamorp
 }
 
 template < class TState >
+void CLDDMMGeometricMetamorphosisObjectiveFunction< TState >::DeleteData()
+{
+  Superclass::DeleteData();
+  this->m_ptrMaskKernel->DeallocateMemory();
+}
+
+template < class TState >
 CLDDMMGeometricMetamorphosisObjectiveFunction< TState >::~CLDDMMGeometricMetamorphosisObjectiveFunction()
 {
 }

@@ -89,7 +89,7 @@ protected:
    */
   virtual void DeleteAuxiliaryStructures() = 0;
 
-  void DeleteData();
+  virtual void DeleteData();
 
   virtual void DetermineTimePointData( std::vector< STimePoint >& vecTimePointData ) = 0;
 

@@ -99,6 +99,8 @@ protected:
 
   void DetermineTimePointData( std::vector< STimePoint >& vecTimePointData );
 
+  virtual void DeleteData();
+
   void DeleteAuxiliaryStructures();
   void CreateAuxiliaryStructures();
 
