@@ -96,20 +96,20 @@ void CLDDMMGeometricMetamorphosisObjectiveFunction< TState >::SetAutoConfigurati
 {
   Superclass::SetAutoConfiguration( combined, cleaned );
   Json::Value& currentConfigurationIn = this->m_CombinedJSONConfig->GetFromKey( "GeometricMetamorphosis", Json::nullValue );
-  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "GeometricMetamorphosis", Json::nullValue );
+  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "GeometricMetamorphosis", Json::nullValue, CONF_NORMAL );
 
-  SetJSONHelpForRootKey( GeometricMetamorphosis, "settings for geometric metamorphosis" );
+  SetJSONHelpForRootKey( GeometricMetamorphosis, "settings for geometric metamorphosis", CONF_NORMAL );
 
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, Sigma1Sqr );
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, Sigma2Sqr );
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, W );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, Sigma1Sqr, CONF_NORMAL );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, Sigma2Sqr, CONF_NORMAL );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, W, CONF_NORMAL );
 
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, Sigma1Sqr,
-                     "1/Sigma1Sqr is the weight for the image match" );
+                     "1/Sigma1Sqr is the weight for the image match", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, Sigma2Sqr,
-                     "1/Sigma2Sqr is the weight for the mask match" );
+                     "1/Sigma2Sqr is the weight for the mask match", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, W,
-                     "W is the weight between the energy terms in [0,1] and [1,2]" );
+                     "W is the weight between the energy terms in [0,1] and [1,2]", CONF_NORMAL );
 }
 
 template < class TState >

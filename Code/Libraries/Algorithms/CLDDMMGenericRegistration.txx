@@ -39,14 +39,14 @@ void CLDDMMGenericRegistration< TState >::SetAutoConfiguration( CJSONConfigurati
   Superclass::SetAutoConfiguration( combined, cleaned );
 
   Json::Value& currentConfigurationIn = this->m_CombinedJSONConfig->GetFromKey( "GeneralRegistrationSettings", Json::nullValue );
-  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "GeneralRegistrationSettings", Json::nullValue );
+  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "GeneralRegistrationSettings", Json::nullValue, CONF_NORMAL );
 
-  SetJSONHelpForRootKey( GeneralRegistrationSettings, "general settings for the registration" );
+  SetJSONHelpForRootKey( GeneralRegistrationSettings, "general settings for the registration", CONF_NORMAL );
 
-  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, ObjectiveFunction );
+  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, ObjectiveFunction, CONF_NORMAL );
 
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, ObjectiveFunction,
-                     "objective function: LDDMMAdjointGeodesicShooting / LDDMMSimplifiedGeodesicShooting / LDDMMGrowthModel" );
+                     "objective function: LDDMMAdjointGeodesicShooting / LDDMMSimplifiedGeodesicShooting / LDDMMGrowthModel", CONF_NORMAL );
 }
 
 

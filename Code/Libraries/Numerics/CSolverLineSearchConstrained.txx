@@ -42,18 +42,18 @@ void CSolverLineSearchConstrained< TState >::SetAutoConfiguration( CJSONConfigur
   Superclass::SetAutoConfiguration( combined, cleaned );
 
   Json::Value& currentConfigurationIn = this->m_CombinedJSONConfig->GetFromKey( "LineSearch", Json::nullValue );
-  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "LineSearch", Json::nullValue );
+  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "LineSearch", Json::nullValue, CONF_NORMAL );
 
-  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, AugmentedLagrangianNumberOfIterations );
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, AugmentedLagrangianPenaltyIncreaseFactor );
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, AugmentedLagrangianInitialMu );
+  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, AugmentedLagrangianNumberOfIterations, CONF_NORMAL );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, AugmentedLagrangianPenaltyIncreaseFactor, CONF_EXPERT );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, AugmentedLagrangianInitialMu, CONF_EXPERT );
 
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, AugmentedLagrangianNumberOfIterations,
-                     "number of times the augmented Lagrangian should be updated" );
+                     "number of times the augmented Lagrangian should be updated", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, AugmentedLagrangianPenaltyIncreaseFactor,
-                     "factor by which the penalty for the constraint is increased at each augmented Lagrangian iteration" );
+                     "factor by which the penalty for the constraint is increased at each augmented Lagrangian iteration", CONF_EXPERT );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, AugmentedLagrangianInitialMu,
-                     "initial weight factor for the quadratic penalty term")
+                     "initial weight factor for the quadratic penalty term", CONF_EXPERT );
 }
 
 

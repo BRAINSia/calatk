@@ -39,17 +39,17 @@ void CLDDMMGeodesicShootingObjectiveFunction< TState >::SetAutoConfiguration( CJ
 {
   Superclass::SetAutoConfiguration( combined, cleaned );
   Json::Value& currentConfigurationIn = this->m_CombinedJSONConfig->GetFromKey( "LDDMMGeodesicShooting", Json::nullValue );
-  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "LDDMMGeodesicShooting", Json::nullValue );
+  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "LDDMMGeodesicShooting", Json::nullValue, CONF_NORMAL );
 
-  SetJSONHelpForRootKey( LDDMMGeodesicShooting, "setting for LDDMM shooting implementation (depending only on initial image/momentum" );
+  SetJSONHelpForRootKey( LDDMMGeodesicShooting, "setting for LDDMM shooting implementation (depending only on initial image/momentum", CONF_NORMAL );
 
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, NumberOfDiscretizationVolumesPerUnitTime );
-  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, EstimateInitialImage );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, NumberOfDiscretizationVolumesPerUnitTime, CONF_NORMAL );
+  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, EstimateInitialImage, CONF_EXPERT );
 
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, NumberOfDiscretizationVolumesPerUnitTime,
-                     "if time is discretized, determines how many discretization steps are used for each unit of time" );
+                     "if time is discretized, determines how many discretization steps are used for each unit of time", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, EstimateIntialImage,
-                     "when true the initial image is jointly estimated with the initial momentum" );
+                     "when true the initial image is jointly estimated with the initial momentum", CONF_EXPERT );
 }
 
 template < class TState >

@@ -43,14 +43,14 @@ void CGaussianKernel< T, VImageDimension >::SetAutoConfiguration( CJSONConfigura
   Superclass::SetAutoConfiguration( combined, cleaned );
   
   Json::Value& currentConfigurationIn = this->m_CombinedJSONConfig->GetFromKey( "GaussianKernel", Json::nullValue );
-  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "GaussianKernel", Json::nullValue );
+  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "GaussianKernel", Json::nullValue, CONF_NORMAL );
 
-  SetJSONHelpForRootKey( GaussianKernel, "isotropic Gaussian kernel" );
+  SetJSONHelpForRootKey( GaussianKernel, "isotropic Gaussian kernel", CONF_NORMAL );
 
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, Sigma );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, Sigma, CONF_NORMAL );
 
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, Sigma,
-                     "standard deviation of Gaussian (in physical coordinates)" );
+                     "standard deviation of Gaussian (in physical coordinates)" , CONF_NORMAL );
 }
 
 template <class T, unsigned int VImageDimension >

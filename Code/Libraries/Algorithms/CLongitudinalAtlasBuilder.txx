@@ -164,70 +164,70 @@ void CLongitudinalAtlasBuilder< TFloat, VImageDimension >::SetAutoConfiguration(
   currentCleanedRoot.removeMember( "MultiScaleSettings" );
 
   Json::Value& currentConfigurationIn = this->m_CombinedJSONConfig->GetFromKey( "LongitudinalAtlasSettings", Json::nullValue );
-  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "LongitudinalAtlasSettings", Json::nullValue );
+  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "LongitudinalAtlasSettings", Json::nullValue, CONF_NORMAL );
 
-  SetJSONHelpForRootKey( LongitudinalAtlasSettings, "general settings for the longitudinal atlas-builder" );
+  SetJSONHelpForRootKey( LongitudinalAtlasSettings, "general settings for the longitudinal atlas-builder", CONF_NORMAL );
 
-  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, IndividualGrowthModelJSONConfigurationFile );
-  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, CrossSectionalAtlasJSONConfigurationFile );
-  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, PopulationGrowthModelJSONConfigurationFile );
+  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, IndividualGrowthModelJSONConfigurationFile, CONF_NORMAL );
+  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, CrossSectionalAtlasJSONConfigurationFile, CONF_NORMAL );
+  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, PopulationGrowthModelJSONConfigurationFile, CONF_NORMAL );
 
-  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, IndividualGrowthModelOutputDirectory );
-  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, CrossSectionalAtlasOutputDirectory );
-  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, PopulationGrowthModelOutputDirectory );
+  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, IndividualGrowthModelOutputDirectory, CONF_NORMAL );
+  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, CrossSectionalAtlasOutputDirectory, CONF_NORMAL );
+  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, PopulationGrowthModelOutputDirectory, CONF_NORMAL );
 
-  SetJSONFromKeyVector( currentConfigurationIn, currentConfigurationOut, DesiredPopulationAtlasTimePoints );
-  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, OnlyComputePopulationAtlasForFirstAvailableTimePoint );
-  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, OnlyComputePopulationAtlasForLastAvailableTimePoint );
+  SetJSONFromKeyVector( currentConfigurationIn, currentConfigurationOut, DesiredPopulationAtlasTimePoints, CONF_NORMAL );
+  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, OnlyComputePopulationAtlasForFirstAvailableTimePoint, CONF_NORMAL );
+  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, OnlyComputePopulationAtlasForLastAvailableTimePoint, CONF_NORMAL );
 
-  SetJSONFromKeyVector( currentConfigurationIn, currentConfigurationOut, DesiredCrossSectionalAtlasTimePoints );
-  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, DetermineCrossSectionalAtlasTimePointsByNumber );
-  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, NumberOfCrossSectionalAtlasTimePoints );
-  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, UseWeightedAveragesForIndividualGrowthModelTimePoints );
+  SetJSONFromKeyVector( currentConfigurationIn, currentConfigurationOut, DesiredCrossSectionalAtlasTimePoints, CONF_NORMAL );
+  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, DetermineCrossSectionalAtlasTimePointsByNumber, CONF_NORMAL );
+  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, NumberOfCrossSectionalAtlasTimePoints, CONF_NORMAL );
+  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, UseWeightedAveragesForIndividualGrowthModelTimePoints, CONF_NORMAL );
 
-  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, WriteDesiredComputationsToFileWithoutComputation );
-  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, UsePrecomputedIndividualGrowthModels );
-  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, UsePrecomputedCrossSectionalAtlases );
-  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, UsePrecomputedPopulationGrowthModel );
+  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, WriteDesiredComputationsToFileWithoutComputation, CONF_NORMAL );
+  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, UsePrecomputedIndividualGrowthModels, CONF_NORMAL );
+  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, UsePrecomputedCrossSectionalAtlases, CONF_NORMAL );
+  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, UsePrecomputedPopulationGrowthModel, CONF_NORMAL );
 
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, IndividualGrowthModelJSONConfigurationFile,
-                     "Configuration JSON file which controls the computation of the subject-specific growth models." );
+                     "Configuration JSON file which controls the computation of the subject-specific growth models.", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, CrossSectionalAtlasJSONConfigurationFile,
-                     "Configuration JSON file which controls the computation of the cross-sectional atlases at specific time-points." );
+                     "Configuration JSON file which controls the computation of the cross-sectional atlases at specific time-points.", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, PopulationGrowthModelJSONConfigurationFile,
-                     "Configuration JSON file which controls the computation of the final growth model (over the computed cross-sectional atlases)." );
+                     "Configuration JSON file which controls the computation of the final growth model (over the computed cross-sectional atlases).", CONF_NORMAL );
 
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, IndividualGrowthModelOutputDirectory,
-                     "Directory where the output of the individual growth models will be stored" );
+                     "Directory where the output of the individual growth models will be stored", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, CrossSectionalAtlasOutputDirectory,
-                     "Directory where the output of the cross-sectional atlases will be stored" );
+                     "Directory where the output of the cross-sectional atlases will be stored", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, PopulationGrowthModelOutputDirectory,
-                     "Directory where the output of the population growth models will be stored" );
+                     "Directory where the output of the population growth models will be stored", CONF_NORMAL );
 
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, DesiredPopulationAtlasTimePoints,
-                     "Vector specifying at which timepoints the population atlas should be computed." );
+                     "Vector specifying at which timepoints the population atlas should be computed.", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, OnlyComputePopulationAtlasForFirstAvailableTimePoint,
-                     "if true, time points do not need to be explicitly specified, first one is the one" );
+                     "if true, time points do not need to be explicitly specified, first one is the one", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, OnlyComputePopulationAtlasForLastAvailableTimePoint,
-                     "if true, time points do not need to be explicitly specified, last one is the one" );
+                     "if true, time points do not need to be explicitly specified, last one is the one", CONF_NORMAL );
 
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, DesiredCrossSectionalAtlasTimePoints,
-                     "Vector specifying at which timepoints the cross-sectional atlases should be computed." );
+                     "Vector specifying at which timepoints the cross-sectional atlases should be computed.", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, DetermineCrossSectionalAtlasTimePointsByNumber,
-                     "if true, time points do not need to be explicitly specified, will be equally distributed across time" );
+                     "if true, time points do not need to be explicitly specified, will be equally distributed across time", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, NumberOfCrossSectionalAtlasTimePoints,
-                     "number of time-points which are distributed equally across time" );
+                     "number of time-points which are distributed equally across time", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, UseWeightedAveragesForIndividualGrowthModelTimePoints,
-                     "if true puts nearest timepoints of an individual growth trajectory into cross-sectional atlas-building step with appropriate linear interpolation weights." );
+                     "if true puts nearest timepoints of an individual growth trajectory into cross-sectional atlas-building step with appropriate linear interpolation weights.", CONF_NORMAL );
 
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, WriteDesiredComputationsToFileWithoutComputation,
-                     "if true, no computations are performed, instead a file is created which contains all the computations which need to be done. Can be parsed externally to create longitudinal atlas manually." );
+                     "if true, no computations are performed, instead a file is created which contains all the computations which need to be done. Can be parsed externally to create longitudinal atlas manually.", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, UsePrecomputedIndividualGrowthModels,
-                     "if true, the individual growth models are assumed to have been computed and are *not* recomputed." );
+                     "if true, the individual growth models are assumed to have been computed and are *not* recomputed.", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, UsePrecomputedCrossSectionalAtlases,
-                     "if true, the cross sectional atlases are assumed to have been computed and are *not* recomputed." );
+                     "if true, the cross sectional atlases are assumed to have been computed and are *not* recomputed.", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, UsePrecomputedPopulationGrowthModel,
-                     "if true, the population growth model is assumed to have been computed and is *not* recomputed." );
+                     "if true, the population growth model is assumed to have been computed and is *not* recomputed.", CONF_NORMAL );
 
   CreateDirectoriesIfNeeded();
 

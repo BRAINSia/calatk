@@ -36,6 +36,12 @@
 namespace CALATK
 {
 
+enum ConfType {
+  CONF_NORMAL,
+  CONF_ADVANCED,
+  CONF_EXPERT
+};
+
 /**
  * @brief Implements ways to extract information from a JSON data description.
  * This can be used to keep track of parameters and to read in configuration files.
@@ -97,7 +103,7 @@ public:
    */
   void  WriteJSONConfigurationFile( const std::string & fileName, const std::string & rootCommentString="" );
 
-  Json::Value& GetFromKey( std::string sKey, Json::Value vDefault = Json::nullValue );
+  Json::Value& GetFromKey( std::string sKey, Json::Value vDefault = Json::nullValue, ConfType confType = CONF_NORMAL );
   Json::Value& GetFromKey( Json::Value& vSubTree, std::string sKey, Json::Value vDefault = Json::nullValue, bool bUseIndent = true );
   Json::Value& GetFromIndex( Json::Value& vSubTree, Json::ArrayIndex ind, bool bUseIndent = true );
   VectorType GetFromKeyAsVector( Json::Value& vSubTree, std::string sKey, VectorType, bool bUseIndent = true );
@@ -117,6 +123,12 @@ public:
   void SetIndent( unsigned int uiIndent );
   unsigned int GetIndent();
 
+  // To allow suppression of json output for clean default configuration files
+  bool IsOfSufficientImportance( ConfType );
+
+  void SetConfigurationLevel( ConfType );
+  ConfType GetConfigurationLevel();
+
 protected:
   std::string ReadFileContentIntoString( const std::string & fileName );
 
@@ -132,6 +144,7 @@ private:
   bool         m_AllowHelpComments;
   bool         m_IsMasterRoot;
   Json::Value* m_ptrRoot;
+  ConfType     m_ConfType;
 };
 
 } // end namespace

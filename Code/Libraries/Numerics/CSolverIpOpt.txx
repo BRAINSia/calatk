@@ -70,38 +70,38 @@ void CSolverIpOpt< TState >::SetAutoConfiguration( CJSONConfiguration * combined
 {
   Superclass::SetAutoConfiguration( combined, cleaned );
   Json::Value& currentConfigurationIn = this->m_CombinedJSONConfig->GetFromKey( "IpOpt", Json::nullValue );
-  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "IpOpt", Json::nullValue );
+  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "IpOpt", Json::nullValue, CONF_NORMAL );
 
-  SetJSONHelpForRootKey( IpOpt, "Setting for the IpOpt optimizer" );
+  SetJSONHelpForRootKey( IpOpt, "Setting for the IpOpt optimizer", CONF_NORMAL );
 
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, tol );
-  SetJSONFromKeyInt( currentConfigurationIn, currentConfigurationOut, print_level );
-  SetJSONFromKeyInt( currentConfigurationIn, currentConfigurationOut, limited_memory_max_history );
-  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, hessian_approximation );
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, eta_phi );
-  SetJSONFromKeyInt( currentConfigurationIn, currentConfigurationOut, watchdog_shortened_iter_trigger );
-  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, accept_every_trial_step );
-  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, output_file );
-  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, derivative_test );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, tol, CONF_NORMAL );
+  SetJSONFromKeyInt( currentConfigurationIn, currentConfigurationOut, print_level, CONF_NORMAL );
+  SetJSONFromKeyInt( currentConfigurationIn, currentConfigurationOut, limited_memory_max_history, CONF_NORMAL );
+  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, hessian_approximation, CONF_EXPERT );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, eta_phi, CONF_NORMAL );
+  SetJSONFromKeyInt( currentConfigurationIn, currentConfigurationOut, watchdog_shortened_iter_trigger, CONF_EXPERT );
+  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, accept_every_trial_step, CONF_NORMAL );
+  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, output_file, CONF_NORMAL );
+  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, derivative_test, CONF_EXPERT );
 
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, tol,
-                     "tolerance for optimizer" );
+                     "tolerance for optimizer", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, print_level,
-                     "how much information should be printed (higher->more, max 10)" );
+                     "how much information should be printed (higher->more, max 10)", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, limited_memory_max_history,
-                     "how many gradients are stored for a quasi Newton method to approximate the Hessian" );
+                     "how many gradients are stored for a quasi Newton method to approximate the Hessian", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, hessian_approximation,
-                     "how the Hessian should be approximated" );
+                     "how the Hessian should be approximated", CONF_EXPERT );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, eta_phi,
-                     "line search sufficient decrease" );
+                     "line search sufficient decrease", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, watchdog_shortened_iter_trigger,
-                     "how many steps for watchdog" );
+                     "how many steps for watchdog", CONF_EXPERT );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, accept_every_trial_step,
-                     "disable proper line search and accept every step (very aggressive)" );
+                     "disable proper line search and accept every step (very aggressive)", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, output_file,
-                     "file to write the optimization information to" );
+                     "file to write the optimization information to", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, derivative_test,
-                     "how to test the derivative numerically" );
+                     "how to test the derivative numerically", CONF_EXPERT );
 }
 
 template < class TState >

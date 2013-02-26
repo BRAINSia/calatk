@@ -50,14 +50,14 @@ void CLDDMMSpatioTemporalVelocityFieldObjectiveFunction< TState >::SetAutoConfig
 {
   Superclass::SetAutoConfiguration( combined, cleaned );
   Json::Value& currentConfigurationIn = this->m_CombinedJSONConfig->GetFromKey( "SpatioTemporalVelocityField", Json::nullValue );
-  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "SpatioTemporalVelocityField", Json::nullValue );
+  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "SpatioTemporalVelocityField", Json::nullValue, CONF_ADVANCED );
 
-  SetJSONHelpForRootKey( SpatioTemporalVelocityField, "settings for the spatio-temporal velocity field" );
+  SetJSONHelpForRootKey( SpatioTemporalVelocityField, "settings for the spatio-temporal velocity field", CONF_ADVANCED );
 
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, NumberOfDiscretizationVolumesPerUnitTime );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, NumberOfDiscretizationVolumesPerUnitTime, CONF_ADVANCED );
 
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, NumberOfDiscretizationVolumesPerUnitTime,
-                     "number of time discretization steps used for a unit time period" );
+                     "number of time discretization steps used for a unit time period", CONF_ADVANCED );
 }
 
 

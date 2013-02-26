@@ -68,26 +68,26 @@ void CMultiGaussianKernel< T, VImageDimension >::SetAutoConfiguration( CJSONConf
 {
   Superclass::SetAutoConfiguration( combined, cleaned );
   Json::Value& currentConfigurationIn = this->m_CombinedJSONConfig->GetFromKey( "MultiGaussianKernel", Json::nullValue );
-  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "MultiGaussianKernel", Json::nullValue );
+  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "MultiGaussianKernel", Json::nullValue, CONF_NORMAL );
 
-  SetJSONHelpForRootKey( MultiGaussianKernel, "weighted sum of Gaussians" );
+  SetJSONHelpForRootKey( MultiGaussianKernel, "weighted sum of Gaussians", CONF_NORMAL );
 
-  SetJSONFromKeyVector( currentConfigurationIn, currentConfigurationOut, Sigmas );
-  SetJSONFromKeyVector( currentConfigurationIn, currentConfigurationOut, EffectiveWeights );
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, Gamma );
-  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, EstimateGradientScalingFactors );
-  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, UseConstantPenaltyGamma );
+  SetJSONFromKeyVector( currentConfigurationIn, currentConfigurationOut, Sigmas, CONF_NORMAL );
+  SetJSONFromKeyVector( currentConfigurationIn, currentConfigurationOut, EffectiveWeights, CONF_ADVANCED );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, Gamma, CONF_ADVANCED );
+  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, EstimateGradientScalingFactors, CONF_ADVANCED );
+  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, UseConstantPenaltyGamma, CONF_ADVANCED );
 
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, Sigmas,
-                     "vector of standard deviations (in physical coordinates)" );
+                     "vector of standard deviations (in physical coordinates)", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, EffectiveWeights,
-                     "weightings for the Gaussians (can be normalized with EstimateGradientScalingFactors)" );
+                     "weightings for the Gaussians (can be normalized with EstimateGradientScalingFactors)", CONF_ADVANCED );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, Gamma,
-                     "constant which penalizes the magnitude of a vector" );
+                     "constant which penalizes the magnitude of a vector", CONF_ADVANCED );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, EstimateGradientScalingFactors,
-                     "estimates the scaling factors for each sigma based on the initial image gradient for that sigma" );
+                     "estimates the scaling factors for each sigma based on the initial image gradient for that sigma", CONF_ADVANCED );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, UseConstantPenaltyGamma,
-                     "flag which determines if the gamma constant is used or not in the multi-Gaussian kernel" );
+                     "flag which determines if the gamma constant is used or not in the multi-Gaussian kernel", CONF_ADVANCED );
 }
 
 template <class T, unsigned int VImageDimension >

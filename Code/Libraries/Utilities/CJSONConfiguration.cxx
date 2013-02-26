@@ -28,7 +28,8 @@ CJSONConfiguration::CJSONConfiguration( bool printSettings )
   : m_Indent( 2 ),
     m_AllowHelpComments( false ),
     m_IsMasterRoot( true ),
-    m_ptrRoot( NULL )
+    m_ptrRoot( NULL ),
+    m_ConfType( CONF_EXPERT )
 {
   m_PrintSettings = printSettings;
   this->InitializeEmptyRoot();
@@ -39,7 +40,8 @@ CJSONConfiguration::CJSONConfiguration( Json::Value * node, bool printSettings )
   : m_Indent( 2 ),
     m_AllowHelpComments( false ),
     m_IsMasterRoot( false ),
-    m_ptrRoot( node )
+    m_ptrRoot( node ),
+    m_ConfType( CONF_EXPERT )
 {
   m_PrintSettings = printSettings;
 }
@@ -50,6 +52,20 @@ CJSONConfiguration::~CJSONConfiguration()
   this->DeleteRoot();
 }
 
+void CJSONConfiguration::SetConfigurationLevel( ConfType confType )
+{
+  m_ConfType = confType;
+}
+
+ConfType CJSONConfiguration::GetConfigurationLevel()
+{
+  return m_ConfType;
+}
+
+bool CJSONConfiguration::IsOfSufficientImportance( ConfType confType )
+{
+  return ( confType <= m_ConfType );
+}
 
 void CJSONConfiguration::PrintSettingsOn()
 {
@@ -246,15 +262,19 @@ void CJSONConfiguration::SetHelpForKey( Json::Value &vSubTree, std::string sKey,
 }
 
 
-Json::Value& CJSONConfiguration::GetFromKey( std::string sKey, Json::Value vDefault )
+Json::Value& CJSONConfiguration::GetFromKey( std::string sKey, Json::Value vDefault, ConfType confType )
 {
-  if ( m_ptrRoot == NULL )
-    {
-    std::cerr << "ERROR: root needs to be initialized before it can be accessed." << std::endl;
-    std::cerr << "WARNING: Initializing empty root." << std::endl;
-    InitializeEmptyRoot();
-    }
-  return GetFromKey( *m_ptrRoot, sKey, vDefault, false );
+  // only create a key if really needed
+  if ( this->IsOfSufficientImportance( confType ) )
+  {
+    if ( m_ptrRoot == NULL )
+      {
+      std::cerr << "ERROR: root needs to be initialized before it can be accessed." << std::endl;
+      std::cerr << "WARNING: Initializing empty root." << std::endl;
+      InitializeEmptyRoot();
+      }
+    return GetFromKey( *m_ptrRoot, sKey, vDefault, false );
+  }
 }
 
 

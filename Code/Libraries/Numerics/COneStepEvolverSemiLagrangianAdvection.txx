@@ -48,17 +48,17 @@ void COneStepEvolverSemiLagrangianAdvection<T, VImageDimension >::SetAutoConfigu
   Superclass::SetAutoConfiguration( combined, cleaned );
 
   Json::Value& currentConfigurationIn = this->m_CombinedJSONConfig->GetFromKey( "OneStepEvolverSemiLagrangianAdvection", Json::nullValue );
-  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "OneStepEvolverSemiLagrangianAdvection", Json::nullValue );
+  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "OneStepEvolverSemiLagrangianAdvection", Json::nullValue, CONF_EXPERT );
 
-  SetJSONHelpForRootKey( OneStepEvolverSemiLagrangianAdvection, "settings for the semi-Lagrangian advection solver" );
+  SetJSONHelpForRootKey( OneStepEvolverSemiLagrangianAdvection, "settings for the semi-Lagrangian advection solver", CONF_EXPERT );
 
-  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, NumberOfIterationsToDetermineFlowField );
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, TimeStepFactor );
+  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, NumberOfIterationsToDetermineFlowField, CONF_EXPERT );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, TimeStepFactor, CONF_EXPERT );
 
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, NumberOfIterationsToDetermineFlowField,
-                     "number of iterations used to determine the velocity which a particle had to end up at the current point" );
+                     "number of iterations used to determine the velocity which a particle had to end up at the current point", CONF_EXPERT );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, TimeStepFactor,
-                     "factor the CFL timestep is multiplied by (can be larger than one for a semi-Lagrangian scheme" );
+                     "factor the CFL timestep is multiplied by (can be larger than one for a semi-Lagrangian scheme", CONF_EXPERT );
 }
 
 //

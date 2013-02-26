@@ -43,14 +43,14 @@ void CResampler< T, VImageDimension >::SetAutoConfiguration( CJSONConfiguration 
 {
   Superclass::SetAutoConfiguration( combined, cleaned );
   Json::Value& currentConfigurationIn = this->m_CombinedJSONConfig->GetFromKey( "Resampler", Json::nullValue );
-  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "Resampler", Json::nullValue );
+  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "Resampler", Json::nullValue, CONF_EXPERT );
 
-  SetJSONHelpForRootKey( Resampler, "image resampler" );
+  SetJSONHelpForRootKey( Resampler, "image resampler", CONF_EXPERT );
 
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, Sigma );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, Sigma, CONF_EXPERT );
 
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, Sigma,
-                     "controls the standard deviation of Gaussian used when resampling" );
+                     "controls the standard deviation of Gaussian used when resampling", CONF_EXPERT );
 }
 
 template <class T, unsigned int VImageDimension >

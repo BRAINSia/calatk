@@ -91,48 +91,48 @@ void CSolverLineSearch< TState>::SetAutoConfiguration( CJSONConfiguration * comb
   Superclass::SetAutoConfiguration( combined, cleaned );
 
   Json::Value& currentConfigurationIn = this->m_CombinedJSONConfig->GetFromKey( "LineSearch", Json::nullValue );
-  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "LineSearch", Json::nullValue );
+  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "LineSearch", Json::nullValue, CONF_NORMAL );
 
-  SetJSONHelpForRootKey( LineSearch, "setting for the linesearch algorithm" );
+  SetJSONHelpForRootKey( LineSearch, "setting for the linesearch algorithm", CONF_NORMAL );
 
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, InitialStepSize );
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, AdjustStepSizeUpFactor );
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, AdjustStepSizeDownFactor );
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, ReductionFactor );
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, MinAllowedStepSize );
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, DecreaseConstant );
-  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, MaxNumberOfIterations );
-  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, MaxNumberOfTries );
-  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, AdjustStepSizeUpNumber );
-  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, AdjustStepSizeDownNumber );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, InitialStepSize, CONF_ADVANCED );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, AdjustStepSizeUpFactor, CONF_EXPERT );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, AdjustStepSizeDownFactor, CONF_EXPERT );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, ReductionFactor, CONF_EXPERT );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, MinAllowedStepSize, CONF_ADVANCED );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, DecreaseConstant, CONF_EXPERT );
+  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, MaxNumberOfIterations, CONF_NORMAL );
+  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, MaxNumberOfTries, CONF_ADVANCED );
+  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, AdjustStepSizeUpNumber, CONF_EXPERT );
+  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, AdjustStepSizeDownNumber, CONF_EXPERT );
 
-  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, OutputStateInformation );
-  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, OutputStateInformationFrequency );
+  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, OutputStateInformation, CONF_EXPERT );
+  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, OutputStateInformationFrequency, CONF_EXPERT );
 
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, InitialStepSize,
-                     "initial step size the solver tries" );
+                     "initial step size the solver tries", CONF_ADVANCED );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, AdjustStepSizeUpFactor,
-                     "factor the desired step size is adjust up (if a sufficient number of successful steps were taken" );
+                     "factor the desired step size is adjust up (if a sufficient number of successful steps were taken", CONF_EXPERT );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, AdjustStepSizeDownFactor,
-                     "factor the desired step size is adjusted down (if the desired step size could not be used repeatedly" );
+                     "factor the desired step size is adjusted down (if the desired step size could not be used repeatedly", CONF_EXPERT );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, ReductionFactor,
-                     "factor by which the step size of the line search is reduced if a reduction could not be found with the current stepsize" );
+                     "factor by which the step size of the line search is reduced if a reduction could not be found with the current stepsize", CONF_EXPERT );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, MinAllowedStepSize,
-                     "minimal allowed step size (before declaring optimization complete)" );
+                     "minimal allowed step size (before declaring optimization complete)", CONF_ADVANCED );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, DecreaseConstant,
-                     "require sufficient decrease of energy" );
+                     "require sufficient decrease of energy", CONF_EXPERT );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, MaxNumberOfIterations,
-                     "maximal number of iterations" );
+                     "maximal number of iterations", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, MaxNumberOfTries,
-                     "number of tries to find a smaller solution" );
+                     "number of tries to find a smaller solution", CONF_ADVANCED );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, AdjustStepSizeUpNumber,
-                     "after how many initial successful steps is the desired step size increased" );
+                     "after how many initial successful steps is the desired step size increased", CONF_EXPERT );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, AdjustStepSizeDownNumber,
-                     "after how many unsuccessful initial steps is the desrired step size decreased" );
+                     "after how many unsuccessful initial steps is the desrired step size decreased", CONF_EXPERT );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, OutputStateInformation,
-                     "output internal information of algorithm (for debugging)" );
+                     "output internal information of algorithm (for debugging)", CONF_EXPERT );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, OutputStateInformationFrequency,
-                     "controls at which iterations the state information should be output" );
+                     "controls at which iterations the state information should be output", CONF_EXPERT );
 }
 
 

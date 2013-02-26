@@ -139,6 +139,17 @@
           </description>
         </boolean>
 
+        <string-enumeration>
+            <name>sCleanedConfigurationType</name>
+            <label>Cleaned Configuration Type</label>
+            <longflag>--cleanedConfigurationType</longflag>
+            <default>normal</default>
+            <element>normal</element>
+            <element>advanced</element>
+            <element>expert</element>
+            <description>Selects how much information the cleaned output should contain. Normal should be sufficient for the beginning user, advanced will expose some specialized options, and expert will show them all. Use this in combination with --cleanConfigOutput to generate initial configuration levels of various complexities.</description>
+        </string-enumeration>
+
         <boolean>
           <name>bCreateJSONHelp</name>
           <longflag>--createJSONHelp</longflag>

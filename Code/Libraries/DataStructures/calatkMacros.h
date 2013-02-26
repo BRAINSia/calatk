@@ -96,45 +96,45 @@
 
 /** Master macro to deal with setting parameters through JSON in the classes */
 
-#define SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, VariableName ) \
+#define SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, VariableName, variableImportanceLevel ) \
   this->SetJSON##VariableName( this->m_CombinedJSONConfig->GetFromKey( currentConfigurationIn, #VariableName, this->GetExternalOrDefault##VariableName() ).asDouble() ); \
-  currentConfigurationOut[ #VariableName ] = currentConfigurationIn[ #VariableName ]; \
+  if ( this->m_CleanedJSONConfig->IsOfSufficientImportance( variableImportanceLevel ) ) currentConfigurationOut[ #VariableName ] = currentConfigurationIn[ #VariableName ]; \
 
-#define SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, VariableName ) \
+#define SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, VariableName, variableImportanceLevel ) \
   this->SetJSON##VariableName( this->m_CombinedJSONConfig->GetFromKey( currentConfigurationIn, #VariableName, this->GetExternalOrDefault##VariableName() ).asUInt() ); \
-  currentConfigurationOut[ #VariableName ] = currentConfigurationIn[ #VariableName ]; \
+  if ( this->m_CleanedJSONConfig->IsOfSufficientImportance( variableImportanceLevel ) ) currentConfigurationOut[ #VariableName ] = currentConfigurationIn[ #VariableName ]; \
 
-#define SetJSONFromKeyInt( currentConfigurationIn, currentConfigurationOut, VariableName ) \
+#define SetJSONFromKeyInt( currentConfigurationIn, currentConfigurationOut, VariableName, variableImportanceLevel ) \
   this->SetJSON##VariableName( this->m_CombinedJSONConfig->GetFromKey( currentConfigurationIn, #VariableName, this->GetExternalOrDefault##VariableName() ).asInt() ); \
-  currentConfigurationOut[ #VariableName ] = currentConfigurationIn[ #VariableName ]; \
+  if ( this->m_CleanedJSONConfig->IsOfSufficientImportance( variableImportanceLevel ) ) currentConfigurationOut[ #VariableName ] = currentConfigurationIn[ #VariableName ]; \
 
-#define SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, VariableName ) \
+#define SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, VariableName, variableImportanceLevel ) \
   this->SetJSON##VariableName( this->m_CombinedJSONConfig->GetFromKey( currentConfigurationIn, #VariableName, this->GetExternalOrDefault##VariableName() ).asBool() ); \
-  currentConfigurationOut[ #VariableName ] = currentConfigurationIn[ #VariableName ]; \
+  if ( this->m_CleanedJSONConfig->IsOfSufficientImportance( variableImportanceLevel ) ) currentConfigurationOut[ #VariableName ] = currentConfigurationIn[ #VariableName ]; \
 
-#define SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, VariableName ) \
+#define SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, VariableName, variableImportanceLevel ) \
   this->SetJSON##VariableName( this->m_CombinedJSONConfig->GetFromKey( currentConfigurationIn, #VariableName, this->GetExternalOrDefault##VariableName() ).asString() ); \
-  currentConfigurationOut[ #VariableName ] = currentConfigurationIn[ #VariableName ]; \
+  if ( this->m_CleanedJSONConfig->IsOfSufficientImportance( variableImportanceLevel ) ) currentConfigurationOut[ #VariableName ] = currentConfigurationIn[ #VariableName ]; \
 
-#define SetJSONFromKeyVector( currentConfigurationIn, currentConfigurationOut, VariableName ) \
+#define SetJSONFromKeyVector( currentConfigurationIn, currentConfigurationOut, VariableName, variableImportanceLevel ) \
   this->SetJSON##VariableName( this->m_CombinedJSONConfig->GetFromKeyAsVector( currentConfigurationIn, #VariableName, this->GetExternalOrDefault##VariableName() ) ); \
-  currentConfigurationOut[ #VariableName ] = currentConfigurationIn[ #VariableName ]; \
+  if ( this->m_CleanedJSONConfig->IsOfSufficientImportance( variableImportanceLevel ) ) currentConfigurationOut[ #VariableName ] = currentConfigurationIn[ #VariableName ]; \
 
-#define SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, VariableName, HelpString) \
+#define SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, VariableName, HelpString, variableImportanceLevel ) \
   this->m_CombinedJSONConfig->SetHelpForKey( currentConfigurationIn, #VariableName, HelpString ); \
-  this->m_CleanedJSONConfig->SetHelpForKey( currentConfigurationOut, #VariableName, HelpString ); \
+  if ( this->m_CleanedJSONConfig->IsOfSufficientImportance( variableImportanceLevel ) ) this->m_CleanedJSONConfig->SetHelpForKey( currentConfigurationOut, #VariableName, HelpString ); \
 
-#define SetJSONHelpForRootKey( VariableName, HelpString ) \
+#define SetJSONHelpForRootKey( VariableName, HelpString, variableImportanceLevel ) \
   this->m_CombinedJSONConfig->SetHelpForKey( #VariableName, HelpString ); \
-  this->m_CleanedJSONConfig->SetHelpForKey( #VariableName, HelpString ); \
+  if ( this->m_CleanedJSONConfig->IsOfSufficientImportance( variableImportanceLevel ) ) this->m_CleanedJSONConfig->SetHelpForKey( #VariableName, HelpString ); \
 
-#define SetJSONHelpForKeyBefore( currentConfigurationIn, currentConfigurationOut, VariableName, HelpString) \
+#define SetJSONHelpForKeyBefore( currentConfigurationIn, currentConfigurationOut, VariableName, HelpString, variableImportanceLevel ) \
   this->m_CombinedJSONConfig->SetHelpForKey( currentConfigurationIn, #VariableName, HelpString, Json::commentBefore ); \
-  this->m_CleanedJSONConfig->SetHelpForKey( currentConfigurationOut, #VariableName, HelpString, Json::commentBefore ); \
+  if ( this->m_CleanedJSONConfig->IsOfSufficientImportance( variableImportanceLevel ) ) this->m_CleanedJSONConfig->SetHelpForKey( currentConfigurationOut, #VariableName, HelpString, Json::commentBefore ); \
 
-#define SetJSONHelpForRootKeyBefore( VariableName, HelpString ) \
+#define SetJSONHelpForRootKeyBefore( VariableName, HelpString, variableImportanceLevel ) \
   this->m_CombinedJSONConfig->SetHelpForKey( #VariableName, HelpString, Json::commentBefore ); \
-  this->m_CleanedJSONConfig->SetHelpForKey( #VariableName, HelpString, Json::commentBefore ); \
+  if ( this->m_CleanedJSONConfig->IsOfSufficientImportance( variableImportanceLevel ) ) this->m_CleanedJSONConfig->SetHelpForKey( #VariableName, HelpString, Json::commentBefore ); \
 
 /** multi-dimensional macro */
 #define DoItND(type,ImageDimension,argc,argv) \

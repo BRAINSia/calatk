@@ -56,26 +56,26 @@ void CSolverNLOpt< TState >::SetAutoConfiguration( CJSONConfiguration * combined
 {
   Superclass::SetAutoConfiguration( combined, cleaned );
   Json::Value& currentConfigurationIn = this->m_CombinedJSONConfig->GetFromKey( "NLOpt", Json::nullValue );
-  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "NLOpt", Json::nullValue );
+  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "NLOpt", Json::nullValue, CONF_NORMAL );
 
-  SetJSONHelpForRootKey( IpOpt, "Setting for the NLOpt optimizer" );
+  SetJSONHelpForRootKey( IpOpt, "Setting for the NLOpt optimizer", CONF_NORMAL );
 
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, initial_step1 );
-  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, maxeval );
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, xtol_rel );
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, ftol_rel );
-  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, vector_storage );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, initial_step1, CONF_NORMAL );
+  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, maxeval, CONF_NORMAL );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, xtol_rel, CONF_NORMAL );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, ftol_rel, CONF_NORMAL );
+  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, vector_storage, CONF_NORMAL );
 
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, initial_step1,
-                     "initial step size for the line search" );
+                     "initial step size for the line search", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, maxeval,
-                     "maximum number of evaluations" );
+                     "maximum number of evaluations", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, xtol_rel,
-                     "termnination tolerance for the variable" );
+                     "termnination tolerance for the variable", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, ftol_rel,
-                     "termination tolerance for the function" );
+                     "termination tolerance for the function", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, vector_storage,
-                     "number of gradients to store for the L-BFGS Hessian approximation " );
+                     "number of gradients to store for the L-BFGS Hessian approximation ", CONF_NORMAL );
 }
 
 template < class TState >

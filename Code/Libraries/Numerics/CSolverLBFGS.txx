@@ -60,29 +60,29 @@ void CSolverLBFGS< TState >::SetAutoConfiguration( CJSONConfiguration * combined
   Superclass::SetAutoConfiguration( combined, cleaned );
 
   Json::Value& currentConfigurationIn = this->m_CombinedJSONConfig->GetFromKey( "LBFGS", Json::nullValue );
-  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "LBFGS", Json::nullValue );
+  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "LBFGS", Json::nullValue, CONF_NORMAL );
 
-  SetJSONHelpForRootKey( IpOpt, "Setting for the libLBFGS optimizer" );
+  SetJSONHelpForRootKey( IpOpt, "Setting for the libLBFGS optimizer", CONF_NORMAL );
 
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, epsilon );
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, min_step );
-  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, max_linesearch );
-  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, m );
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, ftol );
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, gtol );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, epsilon, CONF_NORMAL );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, min_step, CONF_NORMAL );
+  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, max_linesearch, CONF_NORMAL );
+  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, m, CONF_NORMAL );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, ftol, CONF_NORMAL );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, gtol, CONF_NORMAL );
 
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, epsilon,
-                     "epsilon" );
+                     "epsilon", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, min_step,
-                     "minimal step for linesearch" );
+                     "minimal step for linesearch", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, max_linesearch,
-                     "maximal linesearch tries" );
+                     "maximal linesearch tries", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, m,
-                     "number of gradients to store for the Hessian approximation" );
+                     "number of gradients to store for the Hessian approximation", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, ftol,
-                     "f-tolerance" );
+                     "f-tolerance", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, gtol,
-                     "g-tolerance" );
+                     "g-tolerance", CONF_NORMAL );
 }
 
 template < class TState >

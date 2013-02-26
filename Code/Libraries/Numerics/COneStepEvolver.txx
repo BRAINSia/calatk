@@ -39,14 +39,14 @@ void COneStepEvolver<T, VImageDimension >::SetAutoConfiguration( CJSONConfigurat
   Superclass::SetAutoConfiguration( combined, cleaned );
 
   Json::Value& currentConfigurationIn = this->m_CombinedJSONConfig->GetFromKey( "OneStepEvolver", Json::nullValue );
-  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "OneStepEvolver", Json::nullValue );
+  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "OneStepEvolver", Json::nullValue, CONF_ADVANCED );
 
-  SetJSONHelpForRootKey( OneStepEvolver, "settings for solver between two temporal discretization steps" );
+  SetJSONHelpForRootKey( OneStepEvolver, "settings for solver between two temporal discretization steps", CONF_ADVANCED );
 
-  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, NumberOfThreads );
+  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, NumberOfThreads, CONF_ADVANCED );
 
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, NumberOfThreads,
-                     "how many threads to be used for computations" );
+                     "how many threads to be used for computations", CONF_ADVANCED );
 }
 
 template < class T, unsigned int VImageDimension >

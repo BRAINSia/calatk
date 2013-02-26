@@ -43,17 +43,17 @@ void CHelmholtzKernel< T, VImageDimension >::SetAutoConfiguration( CJSONConfigur
 {
   Superclass::SetAutoConfiguration( combined, cleaned );
   Json::Value& currentConfigurationIn = this->m_CombinedJSONConfig->GetFromKey( "HelmholtzKernel", Json::nullValue );
-  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "HelmholtzKernel", Json::nullValue );
+  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "HelmholtzKernel", Json::nullValue, CONF_NORMAL );
 
-  SetJSONHelpForRootKey( HelmholtzKernel, "kernel of the form L=-\\gamma + \\alpha \\nabla^2" );
+  SetJSONHelpForRootKey( HelmholtzKernel, "kernel of the form L=-\\gamma + \\alpha \\nabla^2", CONF_NORMAL );
 
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, Alpha );
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, Gamma );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, Alpha, CONF_NORMAL );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, Gamma, CONF_NORMAL );
 
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, Alpha,
-                     "controls smoothness penalty; larger == smoother" );
+                     "controls smoothness penalty; larger == smoother", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, Gamma,
-                     "controls penalty for deformation length; larger == less deformation");
+                     "controls penalty for deformation length; larger == less deformation", CONF_NORMAL );
 }
 
 template <class T, unsigned int VImageDimension >

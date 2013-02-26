@@ -103,20 +103,20 @@ void CAtlasBuilder< TState >::SetAutoConfiguration( CJSONConfiguration * combine
   Superclass::SetAutoConfiguration( combined, cleaned );
 
   Json::Value& currentConfigurationIn = this->m_CombinedJSONConfig->GetFromKey( "AtlasSettings", Json::nullValue );
-  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "AtlasSettings", Json::nullValue );
+  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "AtlasSettings", Json::nullValue, CONF_NORMAL );
 
-  SetJSONHelpForRootKey( AtlasSettings, "general settings for the atlas-builder" );
+  SetJSONHelpForRootKey( AtlasSettings, "general settings for the atlas-builder", CONF_NORMAL );
 
-  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, AtlasIsSourceImage );
-  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, Kernel );
-  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, Metric );
+  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, AtlasIsSourceImage, CONF_NORMAL );
+  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, Kernel, CONF_NORMAL );
+  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, Metric, CONF_NORMAL );
 
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, AtlasIsSourceImage,
-                     "if true the atlas is used as the source image for the registrations, otherwise it will be the target image" );
+                     "if true the atlas is used as the source image for the registrations, otherwise it will be the target image", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, Kernel,
-                     "kernel: GaussianKernel / MultiGaussianKernel / HelmholtzKernel " );
+                     "kernel: GaussianKernel / MultiGaussianKernel / HelmholtzKernel ", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, Metric,
-                     "type of metric: SSD" );
+                     "type of metric: SSD", CONF_NORMAL );
 
 }
 

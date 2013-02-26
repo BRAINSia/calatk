@@ -119,6 +119,19 @@ int DoIt( int argc, char** argv )
   }
   CALATK::CJSONConfiguration::Pointer cleanedConfiguration = new CALATK::CJSONConfiguration;
 
+  if ( sCleanedConfigurationType.compare( "expert") == 0 )
+    {
+      cleanedConfiguration->SetConfigurationLevel( CALATK::CONF_EXPERT );
+    }
+  else if ( sCleanedConfigurationType.compare( "advanced") == 0 )
+    {
+      cleanedConfiguration->SetConfigurationLevel( CALATK::CONF_ADVANCED );
+    }
+  else
+    {
+      cleanedConfiguration->SetConfigurationLevel( CALATK::CONF_NORMAL );
+    }
+
   ImageManagerType* ptrImageManager = dynamic_cast<ImageManagerType*>( plddmm->GetImageManagerPointer() );
 
   plddmm->SetAutoConfiguration( combinedConfiguration, cleanedConfiguration );

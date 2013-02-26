@@ -39,14 +39,14 @@ void CAtlasObjectiveFunction< TState >::SetAutoConfiguration( CJSONConfiguration
 {
   Superclass::SetAutoConfiguration( combined, cleaned );
   Json::Value& currentConfigurationIn = this->m_CombinedJSONConfig->GetFromKey( "AtlasObjectiveFunction", Json::nullValue );
-  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "AtlasObjectiveFunction", Json::nullValue );
+  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "AtlasObjectiveFunction", Json::nullValue, CONF_NORMAL );
 
-  SetJSONHelpForRootKey( AtlasObjectiveFunction, "settings for the cross-sectional atlas builder" );
+  SetJSONHelpForRootKey( AtlasObjectiveFunction, "settings for the cross-sectional atlas builder", CONF_NORMAL );
 
-  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, AtlasIsSourceImage );
+  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, AtlasIsSourceImage, CONF_NORMAL );
 
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, AtlasIsSourceImage,
-                     "if set to true the atlas is the source (recommended), otherwise it is the target" );
+                     "if set to true the atlas is the source (recommended), otherwise it is the target", CONF_NORMAL );
 }
 
 template < class TState >

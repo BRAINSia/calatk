@@ -42,17 +42,17 @@ void CLDDMMVelocityFieldRegistration< TState >::SetAutoConfiguration( CJSONConfi
 {
   Superclass::SetAutoConfiguration( combined, cleaned );
   Json::Value& currentConfigurationIn = this->m_CombinedJSONConfig->GetFromKey( "GeneralRegistrationSettings", Json::nullValue );
-  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "GeneralRegistrationSettings", Json::nullValue );
+  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "GeneralRegistrationSettings", Json::nullValue, CONF_NORMAL );
 
-  SetJSONHelpForRootKey( GeneralRegistrationSettings, "general settings for the registration" );
+  SetJSONHelpForRootKey( GeneralRegistrationSettings, "general settings for the registration", CONF_NORMAL );
 
-  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, Kernel );
-  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, Metric );
+  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, Kernel , CONF_NORMAL );
+  SetJSONFromKeyString( currentConfigurationIn, currentConfigurationOut, Metric , CONF_NORMAL );
 
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, Kernel,
-                     "kernel: GaussianKernel / MultiGaussianKernel / HelmholtzKernel " );
+                     "kernel: GaussianKernel / MultiGaussianKernel / HelmholtzKernel ", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, Metric,
-                     "type of metric: SSD" );
+                     "type of metric: SSD", CONF_NORMAL );
 }
 
 template < class TState >

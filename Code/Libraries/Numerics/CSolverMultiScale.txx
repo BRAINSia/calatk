@@ -42,30 +42,30 @@ void CSolverMultiScale< TState >::SetAutoConfiguration( CJSONConfiguration * com
 {
   Superclass::SetAutoConfiguration( combined, cleaned );
   Json::Value& currentConfigurationIn = this->m_CombinedJSONConfig->GetFromKey( "MultiScaleFinalOutput", Json::nullValue );
-  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "MultiScaleFinalOutput", Json::nullValue );
+  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "MultiScaleFinalOutput", Json::nullValue, CONF_ADVANCED );
 
-  SetJSONHelpForRootKey( MultiScaleFinalOutput, "output after the last stage of the multi-scale solver");
+  SetJSONHelpForRootKey( MultiScaleFinalOutput, "output after the last stage of the multi-scale solver", CONF_ADVANCED );
 
-  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, OutputStateInformation );
-  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, OutputStateInformationFrequency );
+  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, OutputStateInformation, CONF_ADVANCED );
+  SetJSONFromKeyUInt( currentConfigurationIn, currentConfigurationOut, OutputStateInformationFrequency, CONF_ADVANCED );
 
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, OutputStateInformation,
-                     "if set to true will generate output images" );
+                     "if set to true will generate output images", CONF_ADVANCED );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, OutputStateInformationFrequency,
-                     "at what iteration steps output should be generated" );
+                     "at what iteration steps output should be generated", CONF_ADVANCED );
 
   Json::Value& currentConfigurationInGS = this->m_CombinedJSONConfig->GetFromKey( "MultiScaleGeneralSettings", Json::nullValue );
-  Json::Value& currentConfigurationOutGS = this->m_CleanedJSONConfig->GetFromKey( "MultiScaleGeneralSettings", Json::nullValue );
+  Json::Value& currentConfigurationOutGS = this->m_CleanedJSONConfig->GetFromKey( "MultiScaleGeneralSettings", Json::nullValue, CONF_ADVANCED );
 
-  SetJSONHelpForRootKey( MultiScaleGeneralSettings, "general settings, affecting each scale of the multiscale soltion" );
+  SetJSONHelpForRootKey( MultiScaleGeneralSettings, "general settings, affecting each scale of the multiscale soltion", CONF_ADVANCED );
 
-  SetJSONFromKeyString( currentConfigurationInGS, currentConfigurationOutGS, SingleScaleSolver );
-  SetJSONFromKeyUInt( currentConfigurationInGS, currentConfigurationOutGS, NumberOfSubIterations );
+  SetJSONFromKeyString( currentConfigurationInGS, currentConfigurationOutGS, SingleScaleSolver, CONF_ADVANCED );
+  SetJSONFromKeyUInt( currentConfigurationInGS, currentConfigurationOutGS, NumberOfSubIterations, CONF_ADVANCED );
 
   SetJSONHelpForKey( currentConfigurationInGS, currentConfigurationOutGS, SingleScaleSolver,
-                     "specifies the numerical solver: IpOpt, LineSearchUnconstrained, LineSearchConstrained, NLOpt, LBFGS; IpOpt or LineSearchUnconstrained are recommended. All but LineSearch use an L-BFGS quasi Newton method.");
+                     "specifies the numerical solver: IpOpt, LineSearchUnconstrained, LineSearchConstrained, NLOpt, LBFGS; IpOpt or LineSearchUnconstrained are recommended. All but LineSearch use an L-BFGS quasi Newton method.", CONF_ADVANCED );
   SetJSONHelpForKey( currentConfigurationInGS, currentConfigurationOutGS, NumberOfSubIterations,
-                     "specified how many times the solver should be called (per scale) while applying a pre-condition")
+                     "specified how many times the solver should be called (per scale) while applying a pre-condition", CONF_ADVANCED );
 
 }
 
@@ -129,9 +129,9 @@ bool CSolverMultiScale< TState >::Solve()
   bool MultiScaleHasBeenInitialized = false;
 
   Json::Value& currentConfigurationIn = this->m_CombinedJSONConfig->GetFromKey( "MultiScaleSettings", Json::nullValue );
-  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "MultiScaleSettings", Json::nullValue );
+  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "MultiScaleSettings", Json::nullValue, CONF_NORMAL );
 
-  SetJSONHelpForRootKey( MultiScaleSettings, "settings for the multiscale solver" );
+  SetJSONHelpForRootKey( MultiScaleSettings, "settings for the multiscale solver", CONF_NORMAL );
 
   // loop over all scales, starting at the lowest
   for ( unsigned int iI = numberOfScales; iI > 0; --iI )
@@ -147,6 +147,7 @@ bool CSolverMultiScale< TState >::Solve()
     CJSONConfiguration::Pointer solverCombined = new CJSONConfiguration( node, this->m_CombinedJSONConfig->GetPrintSettings() );
     node = &(this->m_CleanedJSONConfig->GetFromIndex( currentConfigurationOut, scaleIndex, Json::nullValue ));
     CJSONConfiguration::Pointer solverCleaned = new CJSONConfiguration( node, this->m_CleanedJSONConfig->GetPrintSettings() );
+    solverCleaned->SetConfigurationLevel( this->m_CleanedJSONConfig->GetConfigurationLevel() );
     m_ptrSolver->SetAutoConfiguration( solverCombined, solverCleaned );
 
     if ( !MultiScaleHasBeenInitialized )

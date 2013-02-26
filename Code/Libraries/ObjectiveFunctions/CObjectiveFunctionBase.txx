@@ -56,17 +56,17 @@ void CObjectiveFunctionBase< T, VImageDimension >::SetAutoConfiguration( CJSONCo
 {
   Superclass::SetAutoConfiguration( combined, cleaned );
   Json::Value& currentConfigurationIn = this->m_CombinedJSONConfig->GetFromKey( "ObjectiveFunction", Json::nullValue );
-  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "ObjectiveFunction", Json::nullValue );
+  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "ObjectiveFunction", Json::nullValue, CONF_NORMAL );
 
-  SetJSONHelpForRootKey( ObjectiveFunction, "general settings for the objective function" );
+  SetJSONHelpForRootKey( ObjectiveFunction, "general settings for the objective function", CONF_NORMAL );
 
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, SigmaSqr );
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, EnergyWeight );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, SigmaSqr, CONF_NORMAL );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, EnergyWeight, CONF_EXPERT );
 
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, SigmaSqr,
-                     "1/SigmaSqr is the weight for the data match term" );
+                     "1/SigmaSqr is the weight for the data match term", CONF_NORMAL );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, EnergyWeight,
-                     "EnergyWeight is multiplies the energy (useful for example for kernel regression)" );
+                     "EnergyWeight is multiplies the energy (useful for example for kernel regression)", CONF_EXPERT );
 }
 
 

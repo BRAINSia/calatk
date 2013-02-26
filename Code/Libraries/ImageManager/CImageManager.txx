@@ -203,23 +203,23 @@ void CImageManager< TFloat, VImageDimension >::SetAlgorithmAutoConfiguration( CJ
   this->m_AlgorithmAutoConfigurationSet = true;
 
   Json::Value& currentConfigurationIn  = this->m_CombinedJSONConfig->GetFromKey( "ImageManager", Json::nullValue );
-  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "ImageManager", Json::nullValue );
+  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "ImageManager", Json::nullValue, CONF_ADVANCED );
 
-  SetJSONHelpForRootKey( ImageManager, "administers the images, resolutions, and scalings" );
+  SetJSONHelpForRootKey( ImageManager, "administers the images, resolutions, and scalings", CONF_ADVANCED );
 
-  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, AutoScaleImages );
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, Sigma );
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, SigmaHighestResolutionImage );
-  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, BlurHighestResolutionImage );
+  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, AutoScaleImages, CONF_ADVANCED );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, Sigma, CONF_ADVANCED );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, SigmaHighestResolutionImage, CONF_ADVANCED );
+  SetJSONFromKeyBool( currentConfigurationIn, currentConfigurationOut, BlurHighestResolutionImage, CONF_ADVANCED );
 
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, AutoScaleImages,
-                     "if enabled will will set all values of an image smaller than 0 to 0 and scale the maximum value to 1." );
+                     "if enabled will will set all values of an image smaller than 0 to 0 and scale the maximum value to 1.", CONF_ADVANCED );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, Sigma,
-                     "selects the amount of blurring used for the multi-resolution pyramid (physical coordinates for highest resolution image)." );
+                     "selects the amount of blurring used for the multi-resolution pyramid (physical coordinates for highest resolution image).", CONF_ADVANCED );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, SigmaHighestResolutionImage,
-                     "selects the amount of blurring used for the original image if desired. Blurred before *any* multi-resolution computation (physical coordinates for highest resolution image)." );
+                     "selects the amount of blurring used for the original image if desired. Blurred before *any* multi-resolution computation (physical coordinates for highest resolution image).", CONF_ADVANCED );
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, BlurHighestResolutionImage,
-                     "if set to true blurs also the highest resolution image otherwise keeps the highest resolution image as is." );
+                     "if set to true blurs also the highest resolution image otherwise keeps the highest resolution image as is.", CONF_ADVANCED );
 }
 
 

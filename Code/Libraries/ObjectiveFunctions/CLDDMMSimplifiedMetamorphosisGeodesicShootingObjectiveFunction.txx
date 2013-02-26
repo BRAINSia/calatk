@@ -84,14 +84,14 @@ void CLDDMMSimplifiedMetamorphosisGeodesicShootingObjectiveFunction< TState >::S
 {
   Superclass::SetAutoConfiguration( combined, cleaned );
   Json::Value& currentConfigurationIn = this->m_CombinedJSONConfig->GetFromKey( "SimplifiedMetamorphosis", Json::nullValue );
-  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "SimplifiedMetamorphosis", Json::nullValue );
+  Json::Value& currentConfigurationOut = this->m_CleanedJSONConfig->GetFromKey( "SimplifiedMetamorphosis", Json::nullValue, CONF_NORMAL );
 
-  SetJSONHelpForRootKey( GrowthModel, "settings for the simplified metamorphosis model" );
+  SetJSONHelpForRootKey( GrowthModel, "settings for the simplified metamorphosis model", CONF_NORMAL );
 
-  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, Rho );
+  SetJSONFromKeyDouble( currentConfigurationIn, currentConfigurationOut, Rho, CONF_NORMAL );
 
   SetJSONHelpForKey( currentConfigurationIn, currentConfigurationOut, Rho,
-                     "rho is the weight of the appearance change penalty rho|q|^2" );
+                     "rho is the weight of the appearance change penalty rho|q|^2", CONF_NORMAL );
 }
 
 template < class TState >
