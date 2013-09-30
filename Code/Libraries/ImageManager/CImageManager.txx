@@ -187,7 +187,8 @@ void CImageManager< TFloat, VImageDimension >::SelectScale( unsigned int scaleId
 
 
 template < class TFloat, unsigned int VImageDimension >
-void CImageManager< TFloat, VImageDimension >::SetAutoConfiguration( CJSONConfiguration * combined, CJSONConfiguration * cleaned )
+void CImageManager< TFloat, VImageDimension >::SetAutoConfiguration( CJSONConfiguration * /* combined */,
+                                                                     CJSONConfiguration * /* cleaned */ )
 {
   throw std::logic_error( "Do not call me." );
 }

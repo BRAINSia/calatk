@@ -434,7 +434,7 @@ void VectorImage< T, VImageDimension >::print(std::ostream& output) {
 }
 
 template <class T, unsigned int VImageDimension >
-void VectorImage< T, VImageDimension >::print0D(std::ostream& output) {
+void VectorImage< T, VImageDimension >::print0D(std::ostream& /* output */) {
 
   // FIXME
   throw std::runtime_error("Not yet implemented");
@@ -442,7 +442,7 @@ void VectorImage< T, VImageDimension >::print0D(std::ostream& output) {
 }
 
 template <class T, unsigned int VImageDimension >
-void VectorImage< T, VImageDimension >::print1D(std::ostream& output) {
+void VectorImage< T, VImageDimension >::print1D(std::ostream& /* output */) {
 
   // FIXME
   throw std::runtime_error("Not yet implemented");
@@ -450,7 +450,7 @@ void VectorImage< T, VImageDimension >::print1D(std::ostream& output) {
 }
 
 template <class T, unsigned int VImageDimension >
-void VectorImage< T, VImageDimension >::print2D(std::ostream& output) {
+void VectorImage< T, VImageDimension >::print2D(std::ostream& /* output */) {
 
   // FIXME
   throw std::runtime_error("Not yet implemented");

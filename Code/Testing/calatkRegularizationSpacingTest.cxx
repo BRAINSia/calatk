@@ -33,8 +33,12 @@
 typedef double TFLOAT;
 
 template < unsigned int VImageDimension >
-int DoIt( int argc, char* argv[] )
+int DoIt( int argc, char*  argv[] )
 {
+  if(argc < 6)
+    {
+    return EXIT_FAILURE;
+    }
   const std::string sourceImage( argv[1] );
   const std::string targetImage( argv[2] );
 

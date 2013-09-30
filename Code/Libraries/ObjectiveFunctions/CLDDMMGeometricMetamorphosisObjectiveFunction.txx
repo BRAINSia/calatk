@@ -18,7 +18,7 @@
 */
 
 #ifndef C_LDDMM_GEOMETRIC_METAMORPHOSIS_OBJECTIVE_FUNCTION_TXX
-#define C_LDDMM_GEOMETRIC_METAMORPHOSIS_OBJECTIVE_FUNCTON_TXX
+#define C_LDDMM_GEOMETRIC_METAMORPHOSIS_OBJECTIVE_FUNCTION_TXX
 
 template < class TState >
 CLDDMMGeometricMetamorphosisObjectiveFunction< TState >::CLDDMMGeometricMetamorphosisObjectiveFunction()

@@ -20,7 +20,7 @@
 #include "CStateFactory.h"
 #include <cstdlib>
 
-int main( int argc, char* argv[] )
+int main( int /* argc */, char* /* argv */ [])
 {
   typedef float FloatType;
   const unsigned int Dimension = 2;

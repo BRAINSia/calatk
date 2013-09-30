@@ -29,7 +29,7 @@
 #include <iostream>
 #include <vector>
 
-int main( int argc, char * argv[] )
+int main( int /* argc */, char * /* argv */[] )
 {
   typedef CALATK::VectorImage< double, 2 > VectorImageType;
   typedef CALATK::VectorImageUtils< double, 2 > VectorImageUtilsType;

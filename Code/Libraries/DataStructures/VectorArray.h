@@ -314,7 +314,7 @@ public:
     * @param im - the array to substitute with
     * @param width - thickness of boundary layer in voxels
     */
-  void SubstituteBoundaryLayer( VectorArray* im, int width );
+  void SubstituteBoundaryLayer( VectorArray* im, unsigned int width );
 
   /**
    * Method that adds the elements of the array to those of the input array (cellwise)

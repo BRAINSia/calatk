@@ -36,7 +36,7 @@ public:
 
   typedef VectorImage< T, VImageDimension > VectorImageType;
 
-  virtual void SetSquaredPenaltyScalarWeight( T dWeight ) {};
+  virtual void SetSquaredPenaltyScalarWeight( T /* dWeight */) {};
   virtual T GetSquaredPenaltyScalarWeight()
   {
     return 0;

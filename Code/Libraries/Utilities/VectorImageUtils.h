@@ -417,7 +417,7 @@ public:
    * @param im - the input image
    */
   static typename ITKCharImage2D::Pointer convertToITKChar( const VectorImage<T,2>* im);
-  static typename ITKCharImage2D::Pointer convertToITKChar( const VectorImage<T,3>* im)
+  static typename ITKCharImage2D::Pointer convertToITKChar( const VectorImage<T,3>* )
   {
     throw std::runtime_error( "Not implemented." );
   }

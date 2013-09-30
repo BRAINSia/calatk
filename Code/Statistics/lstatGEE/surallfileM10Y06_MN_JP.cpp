@@ -474,7 +474,7 @@ void invv(double **fma, int nn)  /* any nn x nn matrix's inverse */
   GEEUtilities::free_dmatrix_ht(ipi, 1, nn, 1, nn);
 }   /* end of invv.c */
 
-float newIVrank1(float **DXXD, int *rankXX,   int Nrow, float threshold)
+float newIVrank1(float **DXXD, int *rankXX,   int Nrow, float /* threshold */)
 {
   int     dkk, djj, dii;
   float   determ;
@@ -610,7 +610,7 @@ double DnewIVrank(double **DXXD, int *rankXX,   int Nrow)
   return ( determ );
 } /* end */
 
-void matrixmultiply(double **A, int row1, int column1, double **B, int row2, int column2, double **AB)
+void matrixmultiply(double **A, int row1, int column1, double **B, int /* row2 */, int column2, double **AB)
 {
   int i, j, m;
 
@@ -843,7 +843,7 @@ void GEEestimatesHongtu(double *beta,
                         int li,
                         int *mi,
                         int p,
-                        int q,
+                        int /* q */,
                         float ***varMatrix,
                         float **ExactTime,
                         int *indxMI,
@@ -974,7 +974,7 @@ void AR1TimeHongtu(double *residual,
                    float **Corr2,
                    float **ExactTime,
                    int *indxMi,
-                   int *indxMi2,
+                   int * /* indxMi2 */,
                    int nsample,
                    int totalimg)
 {
@@ -1104,7 +1104,7 @@ void AR1TimeHongtu(double *residual,
 void matrixNhalf(float **Corr, float **nHalfCorr, int NP, double powst)
 {
   double **PP0, **PP1, **UU, **VV, *WW, tempt;
-  int      dii, dkk, djj, rankXX, NoP0;
+  int      rankXX, NoP0;
 
   PP0 = GEEUtilities::dmatrix_ht(1, NP, 1, NP);
   PP1 = GEEUtilities::dmatrix_ht(1, NP, 1, NP);
@@ -1112,9 +1112,9 @@ void matrixNhalf(float **Corr, float **nHalfCorr, int NP, double powst)
   VV = GEEUtilities::dmatrix_ht(1, NP, 1, NP);
   WW = GEEUtilities::dvector_ht(1, NP);
 
-  for ( dii = 1; dii <= NP; dii++ )
+  for ( int dii = 1; dii <= NP; dii++ )
     {
-    for ( djj = 1; djj <= NP; djj++ )
+    for ( int djj = 1; djj <= NP; djj++ )
       {
       UU[dii][djj] = Corr[dii][djj];
       PP1[dii][djj] = 0.0;
@@ -1134,7 +1134,7 @@ void matrixNhalf(float **Corr, float **nHalfCorr, int NP, double powst)
       }
     }
 
-  for ( dii = 1; dii <= NP; dii++ )
+  for ( int dii = 1; dii <= NP; dii++ )
     {
     if ( fabs(WW[dii] / maxWW) > 0.000001 )
       {
@@ -1145,20 +1145,20 @@ void matrixNhalf(float **Corr, float **nHalfCorr, int NP, double powst)
       {
       WW[dii] = 0.0;
       NoP0++;
-      for ( djj = 1; djj <= NP; djj++ )
+      for ( int djj = 1; djj <= NP; djj++ )
         {
         PP0[djj][NoP0] = VV[djj][dii];
         }
       }
     }
 
-  for ( dii = 1; dii <= NP; dii++ )
+  for ( int dii = 1; dii <= NP; dii++ )
     {
-    for ( djj = 1; djj <= NP; djj++ )
+    for ( int djj = 1; djj <= NP; djj++ )
       {
       nHalfCorr[dii][djj] = 0.0;
       tempt = 0.0;
-      for ( dkk = 1; dkk <= NP; dkk++ )
+      for ( int dkk = 1; dkk <= NP; dkk++ )
         {
         tempt += VV[dii][dkk] * WW[dkk] * UU[djj][dkk];
         }
@@ -1247,7 +1247,7 @@ void FinalCorrHongtu(float **Corr1,
 //###################################################################
 
 void CalMeanParaHongtu(double **designXX,
-                       int p,
+                       int /* p */,
                        float ***varMatrix,
                        double *residual,
                        double *beta,
@@ -1405,8 +1405,8 @@ void  CalVarGEEHongtu(double **designXX,
                       double *residual,
                       int li,
                       int *mi,
-                      int p,
-                      double *beta,
+                      int /* p */,
+                      double * /* beta */,
                       float ***varMatrix,
                       double **varGEEbeta,
                       int nsample,
@@ -1945,7 +1945,7 @@ void NEWinformbtGEEHongtu(double **AA, double **designXX, float ***varMatrix, in
   GEEUtilities::free_dmatrix_ht(varTEMatrix, 1, Nrowmax, 1, Nrowmax);
 } // end
 
-double EstimateAR_rho(double **timeDresidD, int *indxMi, int djj, int N2total)
+double EstimateAR_rho(double **timeDresidD, int * /* indxMi */, int djj, int N2total)
 {
   int dii; //dmm,dnn,dkk,dll;//mn:removed
   double **xxYmatrix = GEEUtilities::dmatrix_ht(1, N2total, 1, 2);

@@ -109,7 +109,9 @@ protected:
 private:
 
   void SetSigmaSqr( const T ) {}; // intentionally not implemented
-  T GetSigmaSqr( const T ) {}; // intentionally not implemented
+  using Superclass::GetSigmaSqr; // silence 'hides overloaded virtual
+                                 // function' warning.
+  T GetSigmaSqr( const T ) {};    // intentionally not implemented
 
   unsigned int m_uiTimeIndexOfTimePoint1;
 

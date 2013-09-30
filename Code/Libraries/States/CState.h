@@ -70,7 +70,7 @@ public:
     return NULL;
   };
 
-  virtual void WriteStateToFile( std::string prefix, std::string postfix, int offset = 0 )
+  virtual void WriteStateToFile( std::string /* prefix */, std::string /* xxpostfix */, int /* offset = 0 */)
   {
     throw std::runtime_error( "Not yet implementded." );
   }
@@ -80,7 +80,7 @@ protected:
 
 private:
   // copy constructor private
-  CState( const CState & c ) {}
+  CState( const CState & /* c */ ) {}
 };
 
 } // end namespace

@@ -37,7 +37,6 @@ int calatkVectorFieldUtilsTest( int argc, char * argv[] )
   const char * deformationField3DFile = argv[2];
 
   typedef float             FloatType;
-  static const unsigned int Dimension = 2;
   const unsigned int        sizeX = 7;
   const unsigned int        sizeY = 6;
   const unsigned int        sizeZ = 3;

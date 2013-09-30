@@ -142,7 +142,7 @@ VectorArray<T, VImageDimension>::VectorArray( const VectorArray<T, VImageDimensi
 // copy constructor
 //
 template <class T, unsigned int VImageDimension>
-VectorArray<T, VImageDimension>::VectorArray( const VectorArray<T, VImageDimension>* source, T dVal ) :
+VectorArray<T, VImageDimension>::VectorArray( const VectorArray<T, VImageDimension>* source, T /* dVal */ ) :
   m_SizeX(source->GetSizeX()),
   m_SizeY(source->GetSizeY()),
   m_SizeZ(source->GetSizeZ()),
@@ -701,11 +701,9 @@ void VectorArray< T, VImageDimension >::Clamp( T minValue, T maxValue )
 
 
 template < class T, unsigned int VImageDimension >
-void VectorArray< T, VImageDimension >::SubstituteBoundaryLayer( VectorArray* im, int width )
+void VectorArray< T, VImageDimension >::SubstituteBoundaryLayer( VectorArray* im, unsigned int width )
 {
-  unsigned int szX = m_SizeX;
-  unsigned int szY = m_SizeY;
-  unsigned int szZ = m_SizeZ;
+
   unsigned int dim = m_Dimension;
 
   // This is a rather inefficient implementation. Achieves the result by copying twice
@@ -722,19 +720,19 @@ void VectorArray< T, VImageDimension >::SubstituteBoundaryLayer( VectorArray* im
   int zFrom = 0;
   int zTo = m_SizeZ-1;
 
-  if ( m_SizeX > 2*width )
+  if ( m_SizeX > 2 * width )
     {
       xFrom += width;
       xTo -= width;
     }
 
-  if ( m_SizeY > 2*width )
+  if ( m_SizeY > 2 * width )
     {
       yFrom += width;
       yTo -= width;
     }
 
-  if ( m_SizeZ > 2*width )
+  if ( m_SizeZ > 2 * width )
     {
       zFrom += width;
       yTo -= width;

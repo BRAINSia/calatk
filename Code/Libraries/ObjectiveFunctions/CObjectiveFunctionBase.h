@@ -165,7 +165,7 @@ public:
   GetMacro( EnergyWeight, T );
 
   /* Can get called to create an output of a current state (input is iteration number) */
-  virtual void OutputStateInformation( unsigned int uiIter, std::string outputPrefix="" )
+  virtual void OutputStateInformation( unsigned int /* uiIter */, std::string /* outputPrefix="" */ )
   {
   };
 

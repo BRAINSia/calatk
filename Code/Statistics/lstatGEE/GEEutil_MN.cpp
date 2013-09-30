@@ -122,22 +122,22 @@ int ** imatrix_ht(int nrl, int nrh, int ncl, int nch)
   return m;
 }
 
-void free_vector_ht(float *v, int nl, int nh)
+void free_vector_ht(float *v, int nl, int /* nh */)
 {
   delete[] ( v + nl );
 }
 
-void free_ivector_ht(int *v, int nl, int nh)
+void free_ivector_ht(int *v, int nl, int /* nh */)
 {
   delete[] ( v + nl );
 }
 
-void free_dvector_ht(double *v, int nl, int nh)
+void free_dvector_ht(double *v, int nl, int /* nh */)
 {
   delete[] ( v + nl );
 }
 
-void free_matrix_ht(float **m, int nrl, int nrh, int ncl, int nch)
+void free_matrix_ht(float **m, int nrl, int nrh, int ncl, int /* nch */)
 {
   int i;
 
@@ -148,7 +148,7 @@ void free_matrix_ht(float **m, int nrl, int nrh, int ncl, int nch)
   delete[] ( m + nrl );
 }
 
-void free_dmatrix_ht(double **m, int nrl, int nrh, int ncl, int nch)
+void free_dmatrix_ht(double **m, int nrl, int nrh, int ncl, int /* nch */)
 {
   int i;
 
@@ -159,7 +159,7 @@ void free_dmatrix_ht(double **m, int nrl, int nrh, int ncl, int nch)
   delete[] ( m + nrl );
 }
 
-void free_imatrix_ht(int **m, int nrl, int nrh, int ncl, int nch)
+void free_imatrix_ht(int **m, int nrl, int nrh, int ncl, int /* nch */)
 {
   int i;
 
@@ -193,7 +193,7 @@ float *** fmatrix3_ht(int nrl, int nrh, int ncl, int nch, int n3l, int n3h)
   return m;
 }
 
-void free_fmatrix3_ht(float ***m, int nrl, int nrh, int ncl, int nch, int n3l, int n3h)
+void free_fmatrix3_ht(float ***m, int nrl, int nrh, int ncl, int nch, int n3l, int /* n3h */)
 {
   int i, j;
 
