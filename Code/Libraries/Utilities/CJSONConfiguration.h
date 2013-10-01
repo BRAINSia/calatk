@@ -145,6 +145,7 @@ private:
   bool         m_IsMasterRoot;
   Json::Value* m_ptrRoot;
   ConfType     m_ConfType;
+  Json::Value  m_NullValue;
 };
 
 } // end namespace

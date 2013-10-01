@@ -49,7 +49,7 @@ CAtlasBuilder< TState >::~CAtlasBuilder()
 
 // purposefully disable functions (since they are not sensible for the atlas-builder)
 template < class TState >
-void CAtlasBuilder< TState >::SetKernelPointer( KernelType *ptrKernel )
+void CAtlasBuilder< TState >::SetKernelPointer( KernelType * /* ptrKernel */ )
 {
   throw std::runtime_error( "SetKernelPointer should not be used for atlas builder." );
 }
@@ -63,7 +63,7 @@ CAtlasBuilder< TState >::GetKernelPointer()
 }
 
 template < class TState >
-void CAtlasBuilder< TState >::SetEvolverPointer( EvolverType *ptrEvolver )
+void CAtlasBuilder< TState >::SetEvolverPointer( EvolverType * /* ptrEvolver */)
 {
   throw std::runtime_error( "SetEvolverPointer should not be used for atlas builder." );
 }
@@ -77,7 +77,7 @@ CAtlasBuilder< TState >::GetEvolverPointer()
 }
 
 template < class TState >
-void CAtlasBuilder< TState >::SetMetricPointer( MetricType *ptrMetric )
+void CAtlasBuilder< TState >::SetMetricPointer( MetricType * /* ptrMetric */)
 {
   throw std::runtime_error( "SetMetricPointer should not be used for atlas builder." );
 }
@@ -715,7 +715,7 @@ CAtlasBuilder< TState >::GetMapFromTo( FloatType dTimeFrom, FloatType dTimeTo, u
 
 template < class TState >
 const typename CAtlasBuilder< TState >::VectorImageType*
-CAtlasBuilder< TState >::GetSourceImage( FloatType dTime )
+CAtlasBuilder< TState >::GetSourceImage( FloatType /* dTime */ )
 {
   typedef CAtlasObjectiveFunction< TState > CAtlasType;
   typename CAtlasType::Pointer pAtlas = dynamic_cast< CAtlasType* >( this->m_ptrObjectiveFunction.GetPointer() );
@@ -725,7 +725,7 @@ CAtlasBuilder< TState >::GetSourceImage( FloatType dTime )
 
 template < class TState >
 const typename CAtlasBuilder< TState >::VectorImageType*
-CAtlasBuilder< TState >::GetSourceImage( FloatType dTime, unsigned int uiId )
+CAtlasBuilder< TState >::GetSourceImage( FloatType /* dTime */, unsigned int uiId )
 {
   typedef CAtlasObjectiveFunction< TState > CAtlasType;
   typename CAtlasType::Pointer pAtlas = dynamic_cast< CAtlasType* >( this->m_ptrObjectiveFunction.GetPointer() );
@@ -738,7 +738,7 @@ CAtlasBuilder< TState >::GetSourceImage( FloatType dTime, unsigned int uiId )
 
 template < class TState >
 const typename CAtlasBuilder< TState >::VectorImageType*
-CAtlasBuilder< TState >::GetTargetImage( FloatType dTime )
+CAtlasBuilder< TState >::GetTargetImage( FloatType /* dTime */ )
 {
   typedef CAtlasObjectiveFunction< TState > CAtlasType;
   typename CAtlasType::Pointer pAtlas = dynamic_cast< CAtlasType* >( this->m_ptrObjectiveFunction.GetPointer() );
@@ -748,7 +748,7 @@ CAtlasBuilder< TState >::GetTargetImage( FloatType dTime )
 
 template < class TState >
 const typename CAtlasBuilder< TState >::VectorImageType*
-CAtlasBuilder< TState >::GetTargetImage( FloatType dTime, unsigned int uiId )
+CAtlasBuilder< TState >::GetTargetImage( FloatType /* dTime */, unsigned int uiId )
 {
   typedef CAtlasObjectiveFunction< TState > CAtlasType;
   typename CAtlasType::Pointer pAtlas = dynamic_cast< CAtlasType* >( this->m_ptrObjectiveFunction.GetPointer() );

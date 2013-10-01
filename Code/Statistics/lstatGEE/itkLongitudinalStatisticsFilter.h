@@ -121,7 +121,7 @@ public:
   
   /** Set/Get the input of this process object.  */
   /* We have text files as input here for data that needs to be loaded */
-
+  using Superclass::SetInput;
   virtual void SetInput( const std::string* sCaseFile ); // TODO: Change
 
   /** Set the spacing (size of a pixel) of the image. 

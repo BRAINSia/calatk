@@ -380,7 +380,7 @@ T VectorImageUtils< T, VImageDimension >::interpolatePosGridCoordinates( const V
 // interpolate 3D
 //
 template <class T, unsigned int VImageDimension >
-void VectorImageUtils< T, VImageDimension >::interpolate( const VectorImageType3D* imIn, const VectorImageType3D* pos, VectorImageType3D* imOut, unsigned int uiNrOfThreads )
+void VectorImageUtils< T, VImageDimension >::interpolate( const VectorImageType3D* imIn, const VectorImageType3D* pos, VectorImageType3D* imOut, unsigned int /* uiNrOfThreads */ )
 {
 
   int dim = (int)imIn->GetDimension();
@@ -428,7 +428,7 @@ void VectorImageUtils< T, VImageDimension >::interpolate( const VectorImageType3
 // interpolate 2D
 //
 template <class T, unsigned int VImageDimension >
-void VectorImageUtils< T, VImageDimension >::interpolate( const VectorImageType2D* imIn, const VectorImageType2D* pos, VectorImageType2D* imOut, unsigned int uiNrOfThreads )
+void VectorImageUtils< T, VImageDimension >::interpolate( const VectorImageType2D* imIn, const VectorImageType2D* pos, VectorImageType2D* imOut, unsigned int /* uiNrOfThreads */ )
 {
 
   int dim = (int)imIn->GetDimension();
@@ -472,7 +472,7 @@ void VectorImageUtils< T, VImageDimension >::interpolate( const VectorImageType2
 // interpolate 1D
 //
 template <class T, unsigned int VImageDimension >
-void VectorImageUtils< T, VImageDimension >::interpolate( const VectorImageType1D* imIn, const VectorImageType1D* pos, VectorImageType1D* imOut, unsigned int uiNrOfThreads )
+void VectorImageUtils< T, VImageDimension >::interpolate( const VectorImageType1D* imIn, const VectorImageType1D* pos, VectorImageType1D* imOut, unsigned int /* uiNrOfThreads */ )
 {
 
   int dim = (int)imIn->GetDimension();
@@ -510,7 +510,7 @@ void VectorImageUtils< T, VImageDimension >::interpolate( const VectorImageType1
 // interpolateNegativeVelocityPos 3D
 //
 template <class T, unsigned int VImageDimension >
-void VectorImageUtils< T, VImageDimension >::interpolateNegativeVelocityPos( const VectorImageType3D* imIn, const VectorFieldType3D* v, T dt, VectorImageType3D* imOut, unsigned int uiNrOfThreads )
+void VectorImageUtils< T, VImageDimension >::interpolateNegativeVelocityPos( const VectorImageType3D* imIn, const VectorFieldType3D* v, T dt, VectorImageType3D* imOut, unsigned int /* uiNrOfThreads */ )
 {
 
   int dim = (int)imIn->GetDimension();
@@ -557,7 +557,7 @@ void VectorImageUtils< T, VImageDimension >::interpolateNegativeVelocityPos( con
 // interpolateNegativeVelocityPos 2D
 //
 template <class T, unsigned int VImageDimension >
-void VectorImageUtils< T, VImageDimension >::interpolateNegativeVelocityPos( const VectorImageType2D* imIn, const VectorFieldType2D* v, T dt, VectorImageType2D* imOut, unsigned int uiNrOfThreads )
+void VectorImageUtils< T, VImageDimension >::interpolateNegativeVelocityPos( const VectorImageType2D* imIn, const VectorFieldType2D* v, T dt, VectorImageType2D* imOut, unsigned int /* uiNrOfThreads */ )
 {
 
   int dim = (int)imIn->GetDimension();
@@ -599,7 +599,7 @@ void VectorImageUtils< T, VImageDimension >::interpolateNegativeVelocityPos( con
 // interpolateNegativeVelocityPos 1D
 //
 template <class T, unsigned int VImageDimension >
-void VectorImageUtils< T, VImageDimension >::interpolateNegativeVelocityPos( const VectorImageType1D* imIn, const VectorFieldType1D* v, T dt, VectorImageType1D* imOut, unsigned int uiNrOfThreads )
+void VectorImageUtils< T, VImageDimension >::interpolateNegativeVelocityPos( const VectorImageType1D* imIn, const VectorFieldType1D* v, T dt, VectorImageType1D* imOut, unsigned int /* uiNrOfThreads */ )
 {
 
   int dim = (int)imIn->GetDimension();
@@ -756,11 +756,7 @@ void VectorImageUtils< T, VImageDimension >::meanPixelwise(std::vector<VectorIma
 {
   unsigned len = imOut->GetLength();
 
-  unsigned int szX = imOut->GetSizeX();
-  unsigned int szY = imOut->GetSizeY();
-  unsigned int szZ = imOut->GetSizeZ();
-  unsigned int dim = imOut->GetDimension();
-
+  
 #ifdef DEBUG
   // make sure things are the right size
   for (unsigned int i = 0; i < numIms) {
@@ -1099,7 +1095,7 @@ void VectorImageUtils< T, VImageDimension >::applyAffineITK(typename ITKAffineTr
 // apply ITK affine 3D
 //
 template <class T, unsigned int VImageDimension >
-void VectorImageUtils< T, VImageDimension >::applyAffineITK(typename ITKAffineTransform<T,3>::Type* itkAffine, VectorImageType* imIn, VectorImageType* imOut, T defaultPixelValue, T originX, T originY, T originZ ) {
+void VectorImageUtils< T, VImageDimension >::applyAffineITK(typename ITKAffineTransform<T,3>::Type* itkAffine, VectorImageType* imIn, VectorImageType* imOut, T defaultPixelValue, T originX, T originY, T /* originZ */ ) {
 
   unsigned int dim = imIn->GetDimension();
 
@@ -3031,17 +3027,18 @@ VectorImageUtils< T, VImageDimension >::readFileITK(const std::string& filename)
 template <class T, unsigned int VImageDimension >
 typename ITKAffineTransform<T,VImageDimension>::Type::Pointer VectorImageUtils< T, VImageDimension >::readAffineTransformITK(const std::string& filename) {
 
+  typedef itk::TransformFileReaderTemplate<T> XFRMReaderType;
   // initialize the reader
-  itk::TransformFileReader::Pointer reader = itk::TransformFileReader::New();
+  typename XFRMReaderType::Pointer reader = XFRMReaderType::New();
 
   // link the reader to the file and open the file
   reader->SetFileName(filename);
   reader->Update();
 
   // extract the transform
-  typedef itk::TransformFileReader::TransformListType* TransformListType;
+  typedef typename XFRMReaderType::TransformListType* TransformListType;
   TransformListType transformList = reader->GetTransformList();
-  itk::TransformFileReader::TransformListType::const_iterator it;
+  typename XFRMReaderType::TransformListType::const_iterator it;
   it = transformList->begin();
   typename ITKAffineTransform<T,VImageDimension>::Type::Pointer transform;
   if (!strcmp((*it)->GetNameOfClass(), "AffineTransform"))

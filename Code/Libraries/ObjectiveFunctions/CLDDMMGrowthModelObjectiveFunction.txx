@@ -331,7 +331,7 @@ void CLDDMMGrowthModelObjectiveFunction< TState >::ComputeGradient()
 }
 
 template < class TState >
-void CLDDMMGrowthModelObjectiveFunction< TState >::ComputeInitialUnsmoothedVelocityGradient( VectorFieldType* ptrInitialUnsmoothedVelocityGradient, unsigned int uiKernelNumber )
+void CLDDMMGrowthModelObjectiveFunction< TState >::ComputeInitialUnsmoothedVelocityGradient( VectorFieldType* ptrInitialUnsmoothedVelocityGradient, unsigned int /* uiKernelNumber */ )
 {
   // compute the unsmoothed velocity gradient; to be used to estimate weights for the multi-Gaussian kernels.
   // v is assumed zero here and the unsmoothed gradient is then

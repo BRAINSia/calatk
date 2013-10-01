@@ -275,6 +275,8 @@ Json::Value& CJSONConfiguration::GetFromKey( std::string sKey, Json::Value vDefa
       }
     return GetFromKey( *m_ptrRoot, sKey, vDefault, false );
   }
+  return m_NullValue;         // silence warning, rval obviously
+                                // ignored or this would cause crashes.
 }
 
 

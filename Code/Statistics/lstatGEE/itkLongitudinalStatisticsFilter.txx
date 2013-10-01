@@ -566,9 +566,9 @@ bool sort_pred(const std::pair< MyRealType, MyIntegerType >& left, const std::pa
 template < class MyRealType, class MyIntegerType >
 void
 LongitudinalStatisticsFilter< MyRealType, MyIntegerType >
-::TimeSortCaseInformation( SCaseInformation& caseInformation ) 
+::TimeSortCaseInformation( SCaseInformation& _caseInformation ) 
 {
-  // takes the caseInformation structure and sorts it so that all
+  // takes the _caseInformation structure and sorts it so that all
   // cases are ordered with increasing age (this is useful to pass
   // the information later into the longitudinal atlas builder
 
@@ -579,11 +579,11 @@ LongitudinalStatisticsFilter< MyRealType, MyIntegerType >
 
   unsigned int iNrOfResorts = 0;
 
-  SCaseInformation copyOfCaseInformation = caseInformation;
+  SCaseInformation copyOfCaseInformation = _caseInformation;
 
   // now go thorugh all the subject
 
-  for ( unsigned int iI=0; iI<caseInformation.vSubjectId.size(); iI++ )
+  for ( unsigned int iI=0; iI<_caseInformation.vSubjectId.size(); iI++ )
     {
 
     // Find out how the age is sorted and resort everything according
@@ -591,27 +591,27 @@ LongitudinalStatisticsFilter< MyRealType, MyIntegerType >
     // which are being sorted with age as the key
 
     std::vector< myRealIntPair > vPairAgeAndIndex;
-    for ( unsigned int iJ=0; iJ<caseInformation.vvAge[iI].size(); iJ++ )
+    for ( unsigned int iJ=0; iJ<_caseInformation.vvAge[iI].size(); iJ++ )
       {
-      vPairAgeAndIndex.push_back( myRealIntPair( caseInformation.vvAge[iI][iJ], iJ ) );
+      vPairAgeAndIndex.push_back( myRealIntPair( _caseInformation.vvAge[iI][iJ], iJ ) );
       }
 
     // now sort it
 
-    std::sort(vPairAgeAndIndex.begin(), vPairAgeAndIndex.end(), sort_pred< MyRealType, MyIntegerType> );    
+    std::sort(vPairAgeAndIndex.begin(), vPairAgeAndIndex.end(), sort_pred< MyRealType, MyIntegerType> );
 
     // now we can resort
 
-    for ( unsigned int iJ=0; iJ<caseInformation.vvAge[iI].size(); iJ++ )
+    for ( unsigned int iJ=0; iJ<_caseInformation.vvAge[iI].size(); iJ++ )
       {
       unsigned int currentIndex = vPairAgeAndIndex[iJ].second;
-      
+
       if ( iJ!=currentIndex ) iNrOfResorts++;
 
-      caseInformation.vvScaleFactor[iI][iJ] = copyOfCaseInformation.vvScaleFactor[iI][currentIndex];
-      caseInformation.vvAge[iI][iJ] = copyOfCaseInformation.vvAge[iI][currentIndex];
-      caseInformation.vvFilenames[iI][iJ] = copyOfCaseInformation.vvFilenames[iI][currentIndex];
-      caseInformation.vvAdditionalCovariates[iI][iJ] = copyOfCaseInformation.vvAdditionalCovariates[iI][currentIndex];
+      _caseInformation.vvScaleFactor[iI][iJ] = copyOfCaseInformation.vvScaleFactor[iI][currentIndex];
+      _caseInformation.vvAge[iI][iJ] = copyOfCaseInformation.vvAge[iI][currentIndex];
+      _caseInformation.vvFilenames[iI][iJ] = copyOfCaseInformation.vvFilenames[iI][currentIndex];
+      _caseInformation.vvAdditionalCovariates[iI][iJ] = copyOfCaseInformation.vvAdditionalCovariates[iI][currentIndex];
       }
 
     }
@@ -1052,17 +1052,19 @@ LongitudinalStatisticsFilter< MyRealType, MyIntegerType >
   // now check how many points are part of the mask, because we only
   // need to compute here
 
+  {
   ScalarIntegerIteratorType maskIterator( maskReader->GetOutput(), maskReader->GetOutput()->GetLargestPossibleRegion() );
 
   numberOfPointsInMask = 0;
-  maskIterator.GoToBegin();
-  while ( !maskIterator.IsAtEnd() )
+  for(maskIterator.GoToBegin(); !maskIterator.IsAtEnd(); ++maskIterator )
     {
     MyIntegerType currentMaskValue = maskIterator.Get();
     if ( currentMaskValue>0 )
+      {
       numberOfPointsInMask++;
-    ++maskIterator;
+      }
     }
+  }
 
 
   if ( m_Verbose )

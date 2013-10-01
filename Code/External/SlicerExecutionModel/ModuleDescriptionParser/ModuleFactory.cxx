@@ -28,6 +28,7 @@
 #include <cctype>
 #include <algorithm>
 #include <deque>
+#include <string.h>
 
 #if defined(WIN32)
 #pragma warning ( disable : 4996 )
@@ -49,7 +50,7 @@
 // to avoid getting a warning during the build
 #ifdef _LARGEFILE_SOURCE
 #undef _LARGEFILE_SOURCE
-#endif 
+#endif
 // If debug, Python wants pythonxx_d.lib, so fake it out
 #ifdef _DEBUG
 #undef _DEBUG
@@ -98,7 +99,7 @@ NameIsPythonModule ( const char* name )
  * case before the compare, DynamicLoader always uses
  * lower case for LibExtension values.
  */
-inline bool 
+inline bool
 NameIsSharedLibrary(const char* name)
 {
   std::string extension = itksys::DynamicLoader::LibExtension();
@@ -109,7 +110,7 @@ NameIsSharedLibrary(const char* name)
   // should be ".so"
   extension = ".dylib";
 #endif
-  
+
   std::string sname = name;
   const std::string::size_type extpos(sname.rfind(extension));
   if (extpos != std::string::npos &&
@@ -124,7 +125,7 @@ NameIsSharedLibrary(const char* name)
  * A file scoped function to determine if a file has
  * the executable extension in its name
  */
-inline bool 
+inline bool
 NameIsExecutable(const char* name)
 {
   static const char* standardExtensions[] = {".bat", ".com", ".sh", ".csh", ".tcsh", ".pl", ".py", ".tcl", ".m"};
@@ -143,7 +144,7 @@ NameIsExecutable(const char* name)
   std::string sname = name;
   std::transform(sname.begin(), sname.end(), sname.begin(),
                  (int (*)(int))std::tolower);
-  
+
   for (std::deque<std::string>::iterator it=extensions.begin();
        !foundIt && it != extensions.end(); ++it)
     {
@@ -164,7 +165,7 @@ NameIsExecutable(const char* name)
     // if there is not default extension and we have not found any of
     // the other possible extensions for an executable, then check
     // whether we can exclude the file because it has a shared object
-    // extension. 
+    // extension.
     return !NameIsSharedLibrary(name);
     }
   else
@@ -393,8 +394,8 @@ ModuleFactory
 {
   // Any file that was not found to be a module will be put in the
   // cache at the end as NotAModule
-  
-  
+
+
   // self-describing shared object modules live in a prescribed path
   // and have a prescribed symbol.
   if (this->SearchPaths == "")
@@ -402,7 +403,7 @@ ModuleFactory
     this->WarningMessage( "Empty module search paths." );
     return 0;
     }
-  
+
   std::vector<std::string> modulePaths;
 #ifdef _WIN32
   std::string delim(";");
@@ -417,27 +418,27 @@ ModuleFactory
   double t0, t1;
 
   std::stringstream notModulesList;
-  
-  t0 = itksys::SystemTools::GetTime();  
+
+  t0 = itksys::SystemTools::GetTime();
   for (pit = modulePaths.begin(); pit != modulePaths.end(); ++pit)
     {
     std::stringstream information;
-  
+
     information << "Searching " << *pit
                 << " for files that are not modules." << std::endl;
-    
+
     itksys::Directory directory;
     directory.Load( (*pit).c_str() );
 
     for ( unsigned int ii=0; ii < directory.GetNumberOfFiles(); ++ii)
       {
       const char *filename = directory.GetFile(ii);
-      
+
       // skip any directories
       if (!itksys::SystemTools::FileIsDirectory(filename))
         {
         numberTested++;
-        
+
         std::string fullFilename = std::string(directory.GetPath())
           + "/" + filename;
 
@@ -448,10 +449,10 @@ ModuleFactory
           // filename was not found, in the cache, put it in as
           // NotAModule
           numberFound++;
-          
+
           long int fileModifiedTime
             = itksys::SystemTools::ModifiedTime(fullFilename.c_str());
-          
+
           ModuleCacheEntry entry;
           entry.Location = fullFilename;
           entry.ModifiedTime = fileModifiedTime;
@@ -462,7 +463,7 @@ ModuleFactory
           entry.LogoPixelSize = 0;
           entry.LogoLength = 0;
           entry.Logo = "None";
-          
+
           (*this->InternalCache)[entry.Location] = entry;
           this->CacheModified = true;
 
@@ -472,16 +473,16 @@ ModuleFactory
       }
     }
   t1 = itksys::SystemTools::GetTime();
-  
+
   std::stringstream information;
   information << "Tested " << numberTested << " files. Found "
               << numberFound << " files which were not plugins " << t1 - t0
               << " seconds." << std::endl;
-  
+
   this->InformationMessage( information.str().c_str() );
 
 //  this->WarningMessage ( notModulesList.str().c_str() );
-  
+
   return numberFound;
 }
 
@@ -498,7 +499,7 @@ ModuleFactory
     this->WarningMessage( "Empty module search paths." );
     return 0;
     }
-  
+
   std::vector<std::string> modulePaths;
 #ifdef _WIN32
   std::string delim(";");
@@ -511,22 +512,22 @@ ModuleFactory
   long numberTested = 0;
   long numberFound = 0;
   double t0, t1;
-  
-  t0 = itksys::SystemTools::GetTime();  
+
+  t0 = itksys::SystemTools::GetTime();
   for (pit = modulePaths.begin(); pit != modulePaths.end(); ++pit)
     {
     std::stringstream information;
-  
+
     information << "Searching " << *pit
                 << " for shared object plugins." << std::endl;
-    
+
     itksys::Directory directory;
     directory.Load( (*pit).c_str() );
 
     for ( unsigned int ii=0; ii < directory.GetNumberOfFiles(); ++ii)
       {
       const char *filename = directory.GetFile(ii);
-      
+
       // skip any directories
       if (!itksys::SystemTools::FileIsDirectory(filename))
         {
@@ -534,8 +535,8 @@ ModuleFactory
         if ( NameIsSharedLibrary(filename) )
           {
           numberTested++;
-          
-          // library name 
+
+          // library name
           std::string fullLibraryPath = std::string(directory.GetPath())
             + "/" + filename;
           //std::cout << "Checking " << fullLibraryPath << std::endl;
@@ -592,15 +593,15 @@ ModuleFactory
             ModuleLogoFunction logoFunction = 0;
             char *logoImage = 0;
             int *logoWidth=0, *logoHeight=0, *logoPixelSize=0;
-            unsigned long *logoLength=0;
-            
+            unsigned long logoLength=0;
+
             xmlSymbol = (char*)itksys::DynamicLoader::GetSymbolAddress(lib, "XMLModuleDescription");
 
             if (!xmlSymbol)
               {
               xmlFunction = (XMLModuleDescriptionFunction)itksys::DynamicLoader::GetSymbolAddress(lib, "GetXMLModuleDescription");
               }
-            
+
             if (xmlSymbol || xmlFunction)
               {
               entryPoint = (ModuleEntryPoint)itksys::DynamicLoader::GetSymbolAddress(lib, "ModuleEntryPoint");
@@ -609,13 +610,16 @@ ModuleFactory
                 {
                 // look for logo variables
                 logoImage = (char *)itksys::DynamicLoader::GetSymbolAddress(lib, "ModuleLogoImage");
-                
+
                 if (logoImage)
                   {
                   logoWidth = (int *)itksys::DynamicLoader::GetSymbolAddress(lib, "ModuleLogoWidth");
                   logoHeight = (int *)itksys::DynamicLoader::GetSymbolAddress(lib, "ModuleLogoHeight");
                   logoPixelSize = (int *)itksys::DynamicLoader::GetSymbolAddress(lib, "ModuleLogoPixelSize");
-                  logoLength = (unsigned long *)itksys::DynamicLoader::GetSymbolAddress(lib, "ModuleLogoLength");                  
+                  // logoLength = (unsigned long *)itksys::DynamicLoader::GetSymbolAddress(lib, "ModuleLogoLength");
+                  memcpy(&logoLength,
+                         reinterpret_cast<const void *>(itksys::DynamicLoader::GetSymbolAddress(lib, "ModuleLogoLength")),
+                         sizeof(logoLength));
                   }
                 else
                   {
@@ -644,7 +648,7 @@ ModuleFactory
               if (xml.compare(0, 5, "<?xml") == 0)
                 {
                 this->InternalFileMap->insert(fullLibraryPath);
-                
+
                 // Construct and configure the module object
                 ModuleDescription module;
                 module.SetType("SharedObjectModule");
@@ -655,7 +659,7 @@ ModuleFactory
                 std::transform(lowerName.begin(), lowerName.end(),
                                lowerName.begin(),
                                (int (*)(int))std::tolower);
-                
+
                 sprintf(entryPointAsText, "%p", entryPoint);
                 // std::string entryPointAsString = lowerName + ":" + entryPointAsText;
                 // Set the target as "Unknown" and close the
@@ -679,7 +683,7 @@ ModuleFactory
                 splash_msg +=  module.GetTitle();
                 splash_msg += " Module (adding to cache)...";
                 this->ModuleDiscoveryMessage(splash_msg.c_str());
-                
+
                 if (mit == this->InternalMap->end())
                   {
                   // get the logo and put it on the module
@@ -688,19 +692,19 @@ ModuleFactory
                     // construct a module logo and set it on the module
                     ModuleLogo mLogo;
                     mLogo.SetLogo( logoImage, *logoWidth, *logoHeight,
-                                   *logoPixelSize, *logoLength, 0);
+                                   *logoPixelSize, logoLength, 0);
                     module.SetLogo(mLogo);
                     }
                   else if (logoFunction)
-                    {                  
+                    {
                     int width, height, pixelSize;
                     unsigned long bufferLength;
-                    
+
                     // call the logo function to get the pixels and information
                     const char *logo = (*logoFunction)(&width, &height,
                                                           &pixelSize,
                                                           &bufferLength);
-                    
+
                     // construct a module logo and set it on the module
                     ModuleLogo mLogo;
                     mLogo.SetLogo( logo, width, height, pixelSize,
@@ -710,7 +714,7 @@ ModuleFactory
 
                   // Store the module in the list
                   (*this->InternalMap)[module.GetTitle()] =  module ;
-                  
+
                   information << "ScanForSharedObjectModules: A module named \"" << module.GetTitle()
                               << "\" has been discovered at "
                               << module.GetLocation() << "("
@@ -728,7 +732,7 @@ ModuleFactory
                     (*mit).second.SetAlternativeLocation(module.GetLocation());
                     (*mit).second.SetAlternativeTarget( module.GetTarget() );
                     }
-                  
+
                   information << "A module named \"" << module.GetTitle()
                             << "\" has already been discovered." << std::endl
                             << "    First discovered at "
@@ -748,7 +752,7 @@ ModuleFactory
                 entry.ModifiedTime = libraryModifiedTime;
                 entry.Type = "SharedObjectModule";
                 entry.XMLDescription = xml;
-                
+
                 if (module.GetLogo().GetBufferLength() != 0)
                   {
                   entry.LogoWidth = module.GetLogo().GetWidth();
@@ -766,7 +770,7 @@ ModuleFactory
                   entry.LogoLength = 0;
                   entry.Logo = "None";
                   }
-                
+
                 (*this->InternalCache)[entry.Location] = entry;
                 this->CacheModified = true;
 
@@ -806,12 +810,12 @@ ModuleFactory
     this->InformationMessage( information.str().c_str() );
     }
   t1 = itksys::SystemTools::GetTime();
-  
+
   std::stringstream information;
   information << "Tested " << numberTested << " files as shared object plugins. Found "
               << numberFound << " new plugins in " << t1 - t0
               << " seconds." << std::endl;
-  
+
   this->InformationMessage( information.str().c_str() );
 
   return numberFound;
@@ -828,10 +832,10 @@ ModuleFactory
   //
   if (this->SearchPaths == "")
     {
-    this->WarningMessage( "Empty module search paths." ); 
+    this->WarningMessage( "Empty module search paths." );
     return 0;
     }
-  
+
   std::vector<std::string> modulePaths;
 #ifdef _WIN32
   std::string delim(";");
@@ -849,25 +853,25 @@ ModuleFactory
   for (pit = modulePaths.begin(); pit != modulePaths.end(); ++pit)
     {
     std::stringstream information;
-    
+
     information << "Searching " << *pit
                 << " for command line executable plugins by executing."
                 << std::endl;
-    
+
     itksys::Directory directory;
     directory.Load( (*pit).c_str() );
 
     for ( unsigned int ii=0; ii < directory.GetNumberOfFiles(); ++ii)
       {
       const char *filename = directory.GetFile(ii);
-      
+
       // skip any directories
       if (!itksys::SystemTools::FileIsDirectory(filename))
         {
-        
+
         // try to focus only on executables or those that have registered
         // programs to execute them
-        
+
         // does the file have a known extension?
         std::string ext = itksys::SystemTools::GetFilenameExtension(filename);
         const char *executable = this->GetExecutableForFileExtension(ext);
@@ -935,7 +939,7 @@ ModuleFactory
             command[3] = 0;
             //std::cout << "ScanForCommandLineModulesByExec: Got a registered exec, command[0] = " << command[0] << ", command[1] = " << command[1] << "\n";
             }
-          
+
 
           // setup the command
           itksysProcess_SetCommand(process, command);
@@ -990,7 +994,7 @@ ModuleFactory
               {
               //std::cout << "\t" << filename << " is a plugin." << std::endl;
               this->InternalFileMap->insert( commandName );
-            
+
               // Construct and configure the module object
               ModuleDescription module;
               module.SetType("CommandLineModule");
@@ -1023,7 +1027,7 @@ ModuleFactory
               splash_msg +=  module.GetTitle();
               splash_msg += " Module (adding to cache)...";
               this->ModuleDiscoveryMessage(splash_msg.c_str());
-            
+
               if (mit == this->InternalMap->end())
                 {
                 // See if the module has a logo, if so, store it in
@@ -1034,10 +1038,10 @@ ModuleFactory
                 (*this->InternalMap)[module.GetTitle()] =  module ;
                 information << "ScanForCommandLineModulesByExecuting: A module named \"" << module.GetTitle()
                             << "\" has been discovered at "
-                            << module.GetLocation() 
+                            << module.GetLocation()
                             << "(" << module.GetTarget() << ")"
                             << std::endl;
-                  
+
                 numberFound++;
                 }
               else
@@ -1071,7 +1075,7 @@ ModuleFactory
               entry.ModifiedTime = commandModifiedTime;
               entry.Type = "CommandLineModule";
               entry.XMLDescription = stdoutbuffer;
-              
+
               if (module.GetLogo().GetBufferLength() != 0)
                 {
                 entry.LogoWidth = module.GetLogo().GetWidth();
@@ -1089,7 +1093,7 @@ ModuleFactory
                 entry.LogoLength = 0;
                 entry.Logo = "None";
                 }
-              
+
               (*this->InternalCache)[entry.Location] = entry;
               this->CacheModified = true;
               }
@@ -1141,10 +1145,10 @@ ModuleFactory
   //
   if (this->SearchPaths == "")
     {
-    this->WarningMessage( "Empty module search paths." ); 
+    this->WarningMessage( "Empty module search paths." );
     return 0;
     }
-  
+
   std::vector<std::string> modulePaths;
 #ifdef _WIN32
   std::string delim(";");
@@ -1162,17 +1166,17 @@ ModuleFactory
   for (pit = modulePaths.begin(); pit != modulePaths.end(); ++pit)
     {
     std::stringstream information;
-    
+
     information << "Searching " << *pit
                 << " for command line executable plugins by peeking." << std::endl;
-    
+
     itksys::Directory directory;
     directory.Load( (*pit).c_str() );
 
     for ( unsigned int ii=0; ii < directory.GetNumberOfFiles(); ++ii)
       {
       const char *filename = directory.GetFile(ii);
-      
+
       // skip any directories
       if (!itksys::SystemTools::FileIsDirectory(filename))
         {
@@ -1223,7 +1227,7 @@ ModuleFactory
             unsigned char *logoImage = 0;
             int *logoWidth=0, *logoHeight=0, *logoPixelSize=0;
             unsigned long *logoLength=0;
-            
+
             xmlSymbol
               = (char*)itksys::DynamicLoader::GetSymbolAddress(lib, "XMLModuleDescription");
             if (!xmlSymbol)
@@ -1236,13 +1240,13 @@ ModuleFactory
               {
               // look for logo variables
               logoImage = (unsigned char *)itksys::DynamicLoader::GetSymbolAddress(lib, "ModuleLogoImage");
-                
+
               if (logoImage)
                 {
                 logoWidth = (int *)itksys::DynamicLoader::GetSymbolAddress(lib, "ModuleLogoWidth");
                 logoHeight = (int *)itksys::DynamicLoader::GetSymbolAddress(lib, "ModuleLogoHeight");
                 logoPixelSize = (int *)itksys::DynamicLoader::GetSymbolAddress(lib, "ModuleLogoPixelSize");
-                logoLength = (unsigned long *)itksys::DynamicLoader::GetSymbolAddress(lib, "ModuleLogoLength");                  
+                logoLength = (unsigned long *)itksys::DynamicLoader::GetSymbolAddress(lib, "ModuleLogoLength");
                 }
               }
 
@@ -1261,7 +1265,7 @@ ModuleFactory
                 module.SetType("CommandLineModule");
                 module.SetTarget( fullExecutablePath );
                 module.SetLocation( fullExecutablePath );
-                
+
                 // Parse the xml to build the description of the module
                 // and the parameters
                 ModuleDescriptionParser parser;
@@ -1271,7 +1275,7 @@ ModuleFactory
                   {
                   // construct a module logo and set it on the module
                   ModuleLogo mLogo;
-                  mLogo.SetLogo( (const char *)logoImage, 
+                  mLogo.SetLogo( (const char *)logoImage,
                                  *logoWidth, *logoHeight,
                                  *logoPixelSize, *logoLength, 0);
                   module.SetLogo(mLogo);
@@ -1286,7 +1290,7 @@ ModuleFactory
                 splash_msg +=  module.GetTitle();
                 splash_msg += " Module (adding to cache)...";
                 this->ModuleDiscoveryMessage(splash_msg.c_str());
-                
+
                 if (mit == this->InternalMap->end())
                   {
                   // Store the module in the list
@@ -1330,7 +1334,7 @@ ModuleFactory
                 entry.ModifiedTime = commandModifiedTime;
                 entry.Type = "CommandLineModule";
                 entry.XMLDescription = xml;
-                
+
                 if (module.GetLogo().GetBufferLength() != 0)
                   {
                   entry.LogoWidth = module.GetLogo().GetWidth();
@@ -1347,7 +1351,7 @@ ModuleFactory
                   entry.LogoLength = 0;
                   entry.Logo = "None";
                   }
-                
+
                 (*this->InternalCache)[entry.Location] = entry;
                 this->CacheModified = true;
                 }
@@ -1360,12 +1364,12 @@ ModuleFactory
     this->InformationMessage( information.str().c_str() );
     }
   t1 = itksys::SystemTools::GetTime();
-  
+
   std::stringstream information;
   information << "Tested " << numberTested << " files as command line executable plugins by peeking. Found "
               << numberFound << " new plugins in " << t1 - t0
               << " seconds." << std::endl;
-  
+
   this->InformationMessage( information.str().c_str() );
 
   return numberFound;
@@ -1393,10 +1397,10 @@ ModuleFactory
   //
   if (this->SearchPaths == "")
     {
-    this->WarningMessage( "Empty module search paths." ); 
+    this->WarningMessage( "Empty module search paths." );
     return 0;
     }
-  
+
   std::vector<std::string> modulePaths;
 #ifdef _WIN32
   std::string delim(";");
@@ -1414,17 +1418,17 @@ ModuleFactory
   for (pit = modulePaths.begin(); pit != modulePaths.end(); ++pit)
     {
     std::stringstream information;
-    
+
     information << "Searching " << *pit
                 << " for command line executable plugins by peeking." << std::endl;
-    
+
     itksys::Directory directory;
     directory.Load( (*pit).c_str() );
 
     for ( unsigned int ii=0; ii < directory.GetNumberOfFiles(); ++ii)
       {
       const char *filename = directory.GetFile(ii);
-      
+
       // skip any directories
       if (!itksys::SystemTools::FileIsDirectory(filename))
         {
@@ -1475,7 +1479,7 @@ ModuleFactory
             unsigned char *logoImage = 0;
             int *logoWidth=0, *logoHeight=0, *logoPixelSize=0;
             unsigned long *logoLength=0;
-            
+
             xmlSymbol
               = (char*) myBFD.GetSymbolAddress("XMLModuleDescription");
             if (!xmlSymbol)
@@ -1488,13 +1492,13 @@ ModuleFactory
               {
               // look for logo variables
               logoImage = (unsigned char *) myBFD.GetSymbolAddress("ModuleLogoImage");
-                
+
               if (logoImage)
                 {
                 logoWidth = (int *) myBFD.GetSymbolAddress("ModuleLogoWidth");
                 logoHeight = (int *) myBFD.GetSymbolAddress("ModuleLogoHeight");
                 logoPixelSize = (int *) myBFD.GetSymbolAddress("ModuleLogoPixelSize");
-                logoLength = (unsigned long *) myBFD.GetSymbolAddress("ModuleLogoLength");                  
+                logoLength = (unsigned long *) myBFD.GetSymbolAddress("ModuleLogoLength");
                 }
               }
 
@@ -1513,7 +1517,7 @@ ModuleFactory
                 module.SetType("CommandLineModule");
                 module.SetTarget( fullExecutablePath );
                 module.SetLocation( fullExecutablePath );
-                
+
                 // Parse the xml to build the description of the module
                 // and the parameters
                 ModuleDescriptionParser parser;
@@ -1537,7 +1541,7 @@ ModuleFactory
                 splash_msg +=  module.GetTitle();
                 splash_msg += " Module (adding to cache)...";
                 this->ModuleDiscoveryMessage(splash_msg.c_str());
-                
+
                 if (mit == this->InternalMap->end())
                   {
                   // Store the module in the list
@@ -1581,7 +1585,7 @@ ModuleFactory
                 entry.ModifiedTime = commandModifiedTime;
                 entry.Type = "CommandLineModule";
                 entry.XMLDescription = xml;
-                
+
                 if (module.GetLogo().GetBufferLength() != 0)
                   {
                   entry.LogoWidth = module.GetLogo().GetWidth();
@@ -1629,7 +1633,7 @@ ModuleFactory
 #endif
 }
 #endif
-          
+
 void
 ModuleFactory
 ::GetLogoForCommandLineModuleByExecuting(ModuleDescription& module)
@@ -1649,7 +1653,7 @@ ModuleFactory
   itksysProcess_SetOption(process,
                           itksysProcess_Option_HideWindow, 1);
   itksysProcess_SetTimeout(process, 10.0); // seconds
-  
+
   // execute the command
   itksysProcess_Execute(process);
 
@@ -1675,7 +1679,7 @@ ModuleFactory
       }
     }
   itksysProcess_WaitForExit(process, 0);
-  
+
   // check the exit state / error state of the process
   int result = itksysProcess_GetState(process);
   if (result == itksysProcess_State_Exited)
@@ -1744,7 +1748,7 @@ ModuleFactory
     //{
     //// did not exit cleanly
     //}
-  
+
   // clean up
   itksysProcess_Delete(process);
 }
@@ -1774,7 +1778,7 @@ ModuleFactory
     return 0;
     }
   PyObject* PythonDictionary = PyModule_GetDict(PythonModule);
-  
+
   std::vector<std::string> modulePaths;
 
   // Setting the environment variables from Tk
@@ -1783,7 +1787,7 @@ ModuleFactory
                                 "import os;\n"
                                 "os.environ = dict([ ( s[:s.find('=')],s[s.find('=')+1:]) for s in tk.call('env').splitlines()]);\n";
   PyObject* v2;
-      
+
   v2 = PyRun_String( SetEnvString.c_str(),
                             Py_file_input,
                             PythonDictionary,
@@ -1810,22 +1814,22 @@ ModuleFactory
   splitString(this->SearchPaths, delim, modulePaths);
 
   std::vector<std::string>::const_iterator pit;
-  
-  t0 = itksys::SystemTools::GetTime();  
+
+  t0 = itksys::SystemTools::GetTime();
   for (pit = modulePaths.begin(); pit != modulePaths.end(); ++pit)
     {
     std::stringstream information;
-  
+
     information << "Searching " << *pit
                 << " for Python plugins." << std::endl;
-    
+
     itksys::Directory directory;
     directory.Load( (*pit).c_str() );
 
     for ( unsigned int ii=0; ii < directory.GetNumberOfFiles(); ++ii)
       {
       const char *filename = directory.GetFile(ii);
-      
+
       // skip any directories
       if (!itksys::SystemTools::FileIsDirectory(filename))
         {
@@ -1833,8 +1837,8 @@ ModuleFactory
         if ( NameIsPythonModule(filename) )
           {
           numberTested++;
-          
-          // library name 
+
+          // library name
           std::string fullLibraryPath = std::string(directory.GetPath())
             + "/" + filename;
           //std::cout << "Checking " << fullLibraryPath << std::endl;
@@ -1885,7 +1889,7 @@ ModuleFactory
             "    XML = ''\n";
 
           PyObject* v1;
-      
+
           v1 = PyRun_String( LoadModuleString.c_str(),
                             Py_file_input,
                             PythonDictionary,
@@ -1934,12 +1938,12 @@ ModuleFactory
             splash_msg +=  module.GetTitle();
             splash_msg += " Module (adding to cache)...";
             this->ModuleDiscoveryMessage(splash_msg.c_str());
-                
+
             if (mit == this->InternalMap->end())
               {
               // Store the module in the list
               (*this->InternalMap)[module.GetTitle()] =  module ;
-              
+
               information << "A module named \"" << module.GetTitle()
                           << "\" has been discovered at "
                           << module.GetLocation() << "("
@@ -1957,7 +1961,7 @@ ModuleFactory
                 (*mit).second.SetAlternativeLocation(module.GetLocation());
                 (*mit).second.SetAlternativeTarget( module.GetTarget() );
                 }
-              
+
               information << "A module named \"" << module.GetTitle()
                           << "\" has already been discovered." << std::endl
                           << "    First discovered at "
@@ -1970,14 +1974,14 @@ ModuleFactory
                           << std::endl
                           << "    Keeping first module." << std::endl;
               }
-            
+
             // Put the module in the cache
             ModuleCacheEntry entry;
             entry.Location = fullLibraryPath;
             entry.ModifiedTime = moduleModifiedTime;
             entry.Type = "PythonModule";
             entry.XMLDescription = xml;
-            
+
             if (module.GetLogo().GetBufferLength() != 0)
               {
               entry.LogoWidth = module.GetLogo().GetWidth();
@@ -1994,10 +1998,10 @@ ModuleFactory
               entry.LogoLength = 0;
               entry.Logo = "None";
               }
-            
+
             (*this->InternalCache)[entry.Location] = entry;
             this->CacheModified = true;
-            
+
             }
           }
         }
@@ -2005,12 +2009,12 @@ ModuleFactory
     this->InformationMessage( information.str().c_str() );
     }
   t1 = itksys::SystemTools::GetTime();
-  
+
   std::stringstream information;
   information << "Tested " << numberTested << " files as Python plugins. Found "
               << numberFound << " new plugins in " << t1 - t0
               << " seconds." << std::endl;
-  
+
   this->InformationMessage( information.str().c_str() );
 #endif
   return numberFound;
@@ -2025,7 +2029,7 @@ ModuleFactory
   if (this->CachePath == "")
     {
     information << "No module cache path set." << std::endl;
-    
+
     // emit the message
     this->WarningMessage( information.str().c_str() );
     return;
@@ -2034,10 +2038,10 @@ ModuleFactory
     {
     information << "Loading module cache."
                 << std::endl;
-    
+
     // put code here to write the cache
     std::ifstream cache( (this->CachePath + "/ModuleCache.csv").c_str() );
-    
+
     if (cache)
       {
       ModuleCacheEntry entry;
@@ -2056,7 +2060,7 @@ ModuleFactory
           {
           entry.Location = words[0];
           entry.ModifiedTime = atoi(words[1].c_str());
-          
+
           // trim the Type of leading whitespace
           std::string::size_type pos = words[2].find_first_not_of(" \t\r\n");
           if (pos != std::string::npos)
@@ -2064,14 +2068,14 @@ ModuleFactory
             words[2].erase(0, pos);
             }
           entry.Type = words[2];
-          
+
           // trim the XMLDescription of leading whitespace
           pos = words[3].find_first_not_of(" \t\r\n");
           if (pos != std::string::npos)
             {
             words[3].erase(0, pos);
             }
-          
+
           // convert XML Description from Base64
           if (words[3] != "None")
             {
@@ -2081,10 +2085,10 @@ ModuleFactory
               0,
               (unsigned char *) bin,
               (unsigned long) words[3].size());
-            
+
             entry.XMLDescription =
-              std::string((char *)bin, decodedLengthActual) ; 
-            
+              std::string((char *)bin, decodedLengthActual) ;
+
             delete []bin;
             }
           else
@@ -2105,12 +2109,12 @@ ModuleFactory
             }
 
           entry.Logo = words[8];
-          
+
           (*this->InternalCache)[entry.Location] = entry;
-            
+
           information << "Found cache entry for " << entry.Location
                       << std::endl;
-            
+
           }
         else
           {
@@ -2125,10 +2129,10 @@ ModuleFactory
             }
           }
         }
-      
+
       // emit the message
       this->InformationMessage( information.str().c_str() );
-      
+
       return;
       }
     else
@@ -2136,7 +2140,7 @@ ModuleFactory
       information << "Cannot read cache "
                   << this->CachePath + "/ModuleCache.csv"
                   << std::endl;
-      
+
       // emit the message
       this->WarningMessage( information.str().c_str() );
       return;
@@ -2167,7 +2171,7 @@ ModuleFactory
 
       // put code here to write the cache
       std::ofstream cache( (this->CachePath + "/ModuleCache.csv").c_str() );
-      
+
       if (cache)
         {
         ModuleCache::iterator cit;
@@ -2177,7 +2181,7 @@ ModuleFactory
           cache << (*cit).second.Location << ", "
                 << (*cit).second.ModifiedTime << ", "
                 << (*cit).second.Type << ", ";
-            
+
           if ((*cit).second.XMLDescription != "None")
             {
             size_t encodedLengthEstimate = 2*(*cit).second.XMLDescription.size();
@@ -2191,7 +2195,7 @@ ModuleFactory
               0);
             std::string encodedDescription(bin, encodedLengthActual);
             delete []bin;
-            
+
             cache << encodedDescription << ", ";
             }
           else
@@ -2241,7 +2245,7 @@ ModuleFactory
                      std::stringstream &stream)
 {
   int returnval = 0;
-  
+
   // check whether we have this file in our cache
   ModuleCache::iterator cit = this->InternalCache->find(commandName);
   if (cit != this->InternalCache->end())
@@ -2254,7 +2258,7 @@ ModuleFactory
         {
         // can safely use the cached verion
         this->InternalFileMap->insert( commandName );
-                
+
         ModuleDescription module;
         module.SetType( (*cit).second.Type );
         if (type == "CommandLineModule")
@@ -2294,7 +2298,7 @@ ModuleFactory
                         (*cit).second.LogoLength, 0 );
           module.SetLogo( logo );
           }
-                
+
         ModuleDescriptionParser parser;
         parser.Parse((*cit).second.XMLDescription, module);
 
@@ -2306,15 +2310,15 @@ ModuleFactory
         splash_msg +=  module.GetTitle();
         splash_msg += " Module (in cache)...";
         this->ModuleDiscoveryMessage(splash_msg.c_str());
-              
+
         if (mit == this->InternalMap->end())
           {
           // Store the module in the list
           (*this->InternalMap)[module.GetTitle()] =  module ;
-                  
+
           stream << "A module named \"" << module.GetTitle()
                  << "\" has been loaded from the cache for "
-                 << module.GetLocation() 
+                 << module.GetLocation()
                  << "(" << module.GetTarget() << ")"
                  << std::endl;
           }
@@ -2329,7 +2333,7 @@ ModuleFactory
             (*mit).second.SetAlternativeLocation( module.GetLocation() );
             (*mit).second.SetAlternativeTarget( module.GetTarget() );
             }
-          
+
           stream << "A module named \"" << module.GetTitle()
                  << "\" has already been discovered." << std::endl
                  << "    First discovered at "
@@ -2342,7 +2346,7 @@ ModuleFactory
                  << std::endl
                  << "    Keeping first module." << std::endl;
           }
-                
+
         returnval = 1;
         }
       }
@@ -2375,7 +2379,7 @@ void ModuleFactory::RegisterFileExtension(const char *ext, const char *cmdstring
   if (path != NULL)
     {
     char command[4096];
-  
+
     sprintf(command, cmdstring, path);
     formattedCommandString = std::string(command);
     }
@@ -2384,7 +2388,7 @@ void ModuleFactory::RegisterFileExtension(const char *ext, const char *cmdstring
     formattedCommandString = std::string(cmdstring);
     }
   //std::cout << "RegisterFileExtension: registering extension " << extString << " with command " << formattedCommandString << std::endl;
-  
+
   this->RegisteredExecutablesForFileExtensions[extString] = formattedCommandString;
 }
 

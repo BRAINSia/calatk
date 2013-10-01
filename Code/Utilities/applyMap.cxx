@@ -29,7 +29,6 @@
 #include "applyMapCLP.h"
 
 typedef double TFLOAT;
-const unsigned int VImageDimension = 2;
 
 template < unsigned int VImageDimension >
 int DoIt( int argc, char **argv )

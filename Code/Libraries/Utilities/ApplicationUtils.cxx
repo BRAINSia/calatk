@@ -96,7 +96,7 @@ std::string ApplicationUtils::findFileNameInPath( std::string fileNameOrig, std:
       std::cout << std::endl;
       std::cout << "Detected ambiguous filename expansions:" << std::endl;
 
-      for ( int iI=0; iI < foundFiles.size(); ++iI )
+      for (size_t iI=0; iI < foundFiles.size(); ++iI )
       {
         std::cout << iI << ": " << foundFiles[ iI ] << std::endl;
       }
@@ -151,7 +151,7 @@ bool ApplicationUtils::endsWith(std::string str, std::string sfx) {
 // Function to check if a string starts with the specified character
 //
 bool ApplicationUtils::startsWith(std::string str, char c) {
-  return (str.c_str()[0] == 0);
+  return (str.c_str()[0] == c);
 }
 
 //

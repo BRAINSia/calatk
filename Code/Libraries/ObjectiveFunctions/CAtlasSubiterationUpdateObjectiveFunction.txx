@@ -112,7 +112,7 @@ void CAtlasSubiterationUpdateObjectiveFunction< TState >::InitializeState( TStat
 }
 
 template < class TState >
-void CAtlasSubiterationUpdateObjectiveFunction< TState >::GetSourceImage( VectorImageType* ptrIm )
+void CAtlasSubiterationUpdateObjectiveFunction< TState >::GetSourceImage( VectorImageType* /* ptrIm */ )
 {
   // this should be the initial image of the atlas-builder, same as for the individual registration
   // if the atlas-image is indeed at the center

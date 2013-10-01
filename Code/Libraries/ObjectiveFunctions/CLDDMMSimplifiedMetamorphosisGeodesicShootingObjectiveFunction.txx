@@ -240,7 +240,7 @@ void CLDDMMSimplifiedMetamorphosisGeodesicShootingObjectiveFunction< TState >::G
 }
 
 template < class TState >
-void CLDDMMSimplifiedMetamorphosisGeodesicShootingObjectiveFunction< TState >::GetSourceImage( VectorImageType* ptrIm )
+void CLDDMMSimplifiedMetamorphosisGeodesicShootingObjectiveFunction< TState >::GetSourceImage( VectorImageType* /* ptrIm */ )
 {
   throw std::runtime_error( "Not yet implemented." );
 }
@@ -255,13 +255,13 @@ void CLDDMMSimplifiedMetamorphosisGeodesicShootingObjectiveFunction< TState >::G
 }
 
 template < class TState >
-void CLDDMMSimplifiedMetamorphosisGeodesicShootingObjectiveFunction< TState >::GetTargetImage( VectorImageType* ptrIm )
+void CLDDMMSimplifiedMetamorphosisGeodesicShootingObjectiveFunction< TState >::GetTargetImage( VectorImageType* /* ptrIm */)
 {
   throw std::runtime_error( "Not yet implemented." );
 }
 
 template < class TState >
-void CLDDMMSimplifiedMetamorphosisGeodesicShootingObjectiveFunction< TState >::GetTargetImage( VectorImageType* ptrIm, T dTime )
+void CLDDMMSimplifiedMetamorphosisGeodesicShootingObjectiveFunction< TState >::GetTargetImage( VectorImageType* /* ptrIm */, T /* dTime */ )
 {
   throw std::runtime_error( "Not yet implemented." );
 }
@@ -598,7 +598,7 @@ void CLDDMMSimplifiedMetamorphosisGeodesicShootingObjectiveFunction< TState >::C
 }
 
 template < class TState >
-void CLDDMMSimplifiedMetamorphosisGeodesicShootingObjectiveFunction< TState >::ComputeInitialUnsmoothedVelocityGradient( VectorFieldType* ptrInitialUnsmoothedVelocityGradient, unsigned int uiKernelNumber )
+void CLDDMMSimplifiedMetamorphosisGeodesicShootingObjectiveFunction< TState >::ComputeInitialUnsmoothedVelocityGradient( VectorFieldType* ptrInitialUnsmoothedVelocityGradient, unsigned int /* uiKernelNumber */ )
 {
 
   std::cout << "WARNING: initial unsmooth gradient computation is NOT adapted for metamorphosis. Results may be inaccurate. FIXME." << std::endl;

@@ -28,7 +28,7 @@
 #include "VectorImage.h"
 #include "VectorField.h"
 
-int main(int argc, char **argv)
+int main(int /* argc */, char ** /* argv */)
 {
 
   // create a 2D vector array

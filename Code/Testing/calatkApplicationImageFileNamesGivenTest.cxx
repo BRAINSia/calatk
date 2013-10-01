@@ -24,8 +24,12 @@
 #include <cstdlib>
 #include "CApplication.h"
 
-int calatkApplicationImageFileNamesGivenTest( int argc, char ** argv )
+int calatkApplicationImageFileNamesGivenTest( int argc, char * argv[] )
 {
+  if(argc < 6)
+    {
+    return EXIT_FAILURE;
+    }
   CALATK::CApplication::Pointer calatkApplication;
   try
     {

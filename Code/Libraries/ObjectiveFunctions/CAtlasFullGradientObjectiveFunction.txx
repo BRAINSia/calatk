@@ -121,7 +121,7 @@ void CAtlasFullGradientObjectiveFunction< TState >::InitializeState( TState *ptr
 }
 
 template < class TState >
-void CAtlasFullGradientObjectiveFunction< TState >::GetSourceImage( VectorImageType* ptrIm )
+void CAtlasFullGradientObjectiveFunction< TState >::GetSourceImage( VectorImageType* /* ptrIm */ )
 {
   // this should be the initial image of the atlas-builder, same as for the individual registration
   // if the atlas-image is indeed at the center
